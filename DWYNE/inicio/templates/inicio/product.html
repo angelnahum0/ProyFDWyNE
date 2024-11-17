@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Proyecto</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
+            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
+            <li><p>Bienvenido, {{ user.full_name }}!</p></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+        </ul>
+    </nav>
+    <div>
+        <table>
+            <tr>
+                <th>Título</th>
+                <th>Precio</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+            {% for producto in productos %}
+            <tr>
+                <td>{{ producto.titulo }}</td>
+                <td>{{ producto.precio }}</td>
+                <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+                <td>
+                    <a href="{% url 'producto_edit' producto.id %}">Editar</a>
+                    <a href="{% url 'producto_delete' producto.id %}">Borrar</a>
+                </td>
+            </tr>
+            {% endfor %}
+    </div>
+</body>
+</html>

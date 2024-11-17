@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{producto.titulo}}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
+            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
+            <li><p>Bienvenido, {{ user.full_name }}!</p></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+        </ul>
+    </nav>
+<div>
+        <h1>{{ producto.titulo }}</h1>
+        <p>{{ producto.descripcion }}</p>
+        <p>Precio: ${{ producto.precio }}</p>
+        {% if producto.imagen %}
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}">
+        {% endif %}
+        {% if producto.video %}
+            <video controls>
+                <source src="{{ producto.video.url }}" type="video/mp4">
+                Tu navegador no soporta el elemento de video.
+            </video>
+        {% endif %}
+        <a href="{% url 'product' %}">Volver a la lista de productos</a>
+</div>
+
+</body>
+</html>
