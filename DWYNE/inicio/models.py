@@ -76,21 +76,29 @@ class Vendedores(models.Model):
 
 class Direcciones(models.Model):
     identificador = models.IntegerField(unique=True)
-    usuario = models.IntegerField()
-    codpos = models.IntegerField(max_length=6)
-    ciudad = models.CharField(max_length= 30)
+    codpos = models.IntegerField()
+    ciudad = models.CharField(max_length=30)
     colonia = models.CharField(max_length=30)
     calle = models.CharField(max_length=30)
 
-class ventas(models.Model):
+    def __str__(self):
+        return f"{self.calle}, {self.colonia}, {self.ciudad}"
+
+class Ventas(models.Model):
     identificador = models.IntegerField(unique=True)
-    usuario = models.IntegerField()
-    producto = models.IntegerField()
-    direccion = models.IntegerField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación con Usuario
+    producto = models.IntegerField()  # Si tienes un modelo de Producto, lo podrías usar como ForeignKey
+    direccion = models.ForeignKey(Direcciones, on_delete=models.CASCADE)  # Relación con Direcciones
     cantidad = models.IntegerField()
     fecha = models.DateField(auto_now_add=True)
     total = models.DecimalField(max_digits=20, decimal_places=2)
 
-class userdir(models.Model):
-    usuario = models.IntegerField(unique=True)
-    direccion = models.IntegerField(unique=True)
+    def __str__(self):
+        return f"Venta {self.identificador} - {self.usuario} - {self.total}"
+
+class UserDir(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)  # Relación con Usuario
+    direccion = models.ForeignKey(Direcciones, on_delete=models.CASCADE, unique=True)  # Relación con Direcciones
+
+    def __str__(self):
+        return f"{self.usuario} - {self.direccion}"
