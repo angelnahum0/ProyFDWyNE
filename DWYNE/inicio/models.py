@@ -57,6 +57,7 @@ class Producto(models.Model):
     titulo = models.CharField(max_length=100)         # Título del producto
     descripcion = models.TextField()                  # Descripción detallada
     precio = models.DecimalField(max_digits=10, decimal_places=2)  # Precio con 2 decimales
+    cantidad = models.IntegerField(default=1)                   # Cantidad en stock
     imagen = models.ImageField(upload_to='productos_imagenes/', blank=True, null=True)  # Imagen principal
     video = models.FileField(upload_to='productos_videos/', blank=True, null=True)      # Video promocional
 

@@ -10,11 +10,28 @@
 <body>
     <nav>
         <ul>
+            {% if user.is_authenticated %}
+            {% if user.user_type == "admin" %}
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
             <li><p>Bienvenido, {{ user.full_name }}!</p></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="">Carrito</a></li>
+            <li><p>Bienvenido, {{ user.full_name }}!</p></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% endif %}
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
+            <li><a href="{% url 'register' %}">Registrate</a></li>
+            {% endif %}
         </ul>
     </nav>
 <div>
@@ -30,6 +47,7 @@
                 Tu navegador no soporta el elemento de video.
             </video>
         {% endif %}
+        <a href="">Agregar al carrito</a>
         <a href="{% url 'product' %}">Volver a la lista de productos</a>
 </div>
 

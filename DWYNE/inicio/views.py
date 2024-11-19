@@ -11,9 +11,10 @@ def index(request):
     if not request.user.is_authenticated:
         return render(request, 'inicio/index.html')
     if request.user.user_type == 'usuario':
-        return render(request, 'inicio/indexusr.html')
+        productos = Producto.objects.all()
+        return render(request, 'inicio/indexusr.html',{'productos': productos})
     if request.user.user_type == 'admin':
-        return render(request, 'inicio/indexadmin.html')
+        return render(request, 'inicio/indexadmin.html' )
     
 def product(request):
     if not request.user.is_authenticated:
@@ -28,7 +29,8 @@ def detalle_producto(request, identificador):
     if not request.user.is_authenticated:
         return render(request, 'inicio/index.html')
     if request.user.user_type == 'usuario':
-        return render(request, 'inicio/indexusr.html')
+        producto = get_object_or_404(Producto, identificador=identificador)
+        return render(request, 'inicio/detalle_producto.html', {'producto': producto})
     if request.user.user_type == 'admin':
         producto = get_object_or_404(Producto, identificador=identificador)
         return render(request, 'inicio/detalle_producto.html', {'producto': producto})

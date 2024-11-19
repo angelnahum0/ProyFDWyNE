@@ -13,13 +13,25 @@
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'about' %}">Nosotros</a></li>
             <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="">Carrito</a></li>
             {% if user.is_authenticated %}
             <li><p>Bienvenido, {{ user.full_name }}!</p></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
         </ul>
     </nav>
-    <h1>user type, {{user.user_type}}</h1>
-            {% endif %}
-    
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Precio</th>
+            <th>Imagen</th>
+        </tr>
+        {% for producto in productos %}
+        <tr>
+            <td> <a href="{% url 'detalle_producto' producto.identificador %}">{{ producto.titulo }}</a></td>
+            <td>{{ producto.precio }}</td>
+            <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
 </body>
 </html>
