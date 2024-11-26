@@ -1,6 +1,6 @@
 # En nombre_de_la_app/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm
+from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
@@ -148,8 +148,21 @@ def eliminar_del_carrito(request, producto_id):
     request.session['cart'] = cart
     return redirect('carrito')
 
+def agregar_direccion(request):
+    if request.method == 'POST':
+        form = DireccionesForm(request.POST)
+        if form.is_valid():
+            direccion = form.save(commit=False)
+            direccion.usuario = request.user
+            direccion.save()
+            messages.success(request, 'Dirección agregada exitosamente.')
+            return redirect('procesar_pedido')
+    else:
+        form = DireccionesForm()
+    return render(request, 'inicio/agregar_direccion.html', {'form': form})
+
 def pedido_exitoso(request):
-    return render(request, 'pedido_exitoso.html')
+    return render(request, 'inicio/pedido_exitoso.html')
 
 def procesar_pedido(request):
     cart = request.session.get('cart', {})
@@ -157,19 +170,23 @@ def procesar_pedido(request):
         messages.error(request, "Tu carrito está vacío. No se puede procesar el pedido.")
         return redirect('carrito')
 
+    user = request.user
+    direcciones = Direcciones.objects.filter(usuario_id=user)
+    if not direcciones:
+        messages.error(request, "Necesitas agregar una dirección para procesar el pedido.")
+        return redirect('agregar_direccion')
+    
     if request.method == 'POST':
-        form = PedidoForm(request.POST)
+        form = PedidoForm(request.POST, user=user)
         if form.is_valid():
-            # Guardar el pedido
             pedido = form.save(commit=False)
-            pedido.usuario = request.user
+            pedido.usuario = user
             pedido.total = sum(
                 Producto.objects.get(id=prod_id).precio * cantidad
                 for prod_id, cantidad in cart.items()
             )
             pedido.save()
 
-            # Guardar los detalles del pedido
             for prod_id, cantidad in cart.items():
                 producto = Producto.objects.get(id=prod_id)
                 DetallePedido.objects.create(
@@ -178,15 +195,13 @@ def procesar_pedido(request):
                     cantidad=cantidad,
                     subtotal=producto.precio * cantidad
                 )
-                # Actualizar inventario
-                producto.cantidad -= cantidad
+                producto.stock -= cantidad
                 producto.save()
 
-            # Limpiar el carrito
             request.session['cart'] = {}
             messages.success(request, f"Pedido procesado exitosamente. Total: ${pedido.total:.2f}")
             return redirect('pedido_exitoso')
     else:
-        form = PedidoForm()
+        form = PedidoForm(user=request.user)  # Pasa el usuario aquí
 
-    return render(request, 'procesar_pedido.html', {'form': form})
+    return render(request, 'inicio/procesar_pedido.html', {'form': form})

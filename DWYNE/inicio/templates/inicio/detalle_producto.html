@@ -10,6 +10,13 @@
 <body>
     <nav>
         <ul>
+            <li><a href="{% url 'index' %}">logo</a></li>
+            <li>
+                <input type="search" placeholder="Buscar Producto">
+                <button>Buscar</button>
+            </li>
+        </ul>
+        <ul>
             {% if user.is_authenticated %}
             {% if user.user_type == "admin" %}
             <li><a href="{% url 'index' %}">Inicio</a></li>
@@ -48,8 +55,12 @@
                 Tu navegador no soporta el elemento de video.
             </video>
         {% endif %}
-        <a href="{% url 'add_to_cart' producto.id %}">Agregar al carrito</a>
-        <a href="{% url 'product' %}">Volver a la lista de productos</a>
+        {% if producto.stock == 0 %}
+            <p>Producto agotado</p>
+        {% else %}
+            <a href="{% url 'add_to_cart' producto.id %}">Agregar al carrito</a>
+        {% endif %}
+        <a href="{% url 'index' %}">Volver a la lista de productos</a>
 </div>
 
 </body>

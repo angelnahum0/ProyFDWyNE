@@ -10,6 +10,13 @@
 <body>
     <nav>
         <ul>
+            <li><a href="{% url 'index' %}">logo</a></li>
+            <li>
+                <input type="search" placeholder="Buscar Producto">
+                <button>Buscar</button>
+            </li>
+        </ul>
+        <ul>
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>

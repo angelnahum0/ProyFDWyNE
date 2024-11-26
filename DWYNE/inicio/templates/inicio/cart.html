@@ -9,6 +9,13 @@
 <body>
     <nav>
         <ul>
+            <li><a href="{% url 'index' %}">logo</a></li>
+            <li>
+                <input type="search" placeholder="Buscar Producto">
+                <button>Buscar</button>
+            </li>
+        </ul>
+        <ul>
             {% if user.is_authenticated %}
             {% if user.user_type == "admin" %}
             <li><a href="{% url 'index' %}">Inicio</a></li>

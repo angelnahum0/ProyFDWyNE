@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Pedido</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">logo</a></li>
+            <li>
+                <input type="search" placeholder="Buscar Producto">
+                <button>Buscar</button>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="{% url 'carrito' %}">Carrito</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <h1>Confirmar Pedido</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Procesar Pedido</button>
+    </form>
+    <a href="{% url 'carrito' %}">Volver al Carrito</a>
+</body>
+</html>

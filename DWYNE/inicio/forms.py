@@ -12,6 +12,18 @@ class LoginForm(forms.Form):
     email = forms.EmailField(label='Correo electrónico', widget=forms.EmailInput(attrs={'placeholder': 'Correo electrónico'}))
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
     
+class DireccionesForm(forms.ModelForm):
+    class Meta:
+        model = Direcciones
+        fields = ['codpos', 'ciudad', 'colonia', 'calle']
+        widgets = {
+            'codpos': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Código Postal'}),
+            'ciudad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ciudad'}),
+            'colonia': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Colonia'}),
+            'calle': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Calle y numero'}),
+        }
+
+
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
@@ -19,7 +31,7 @@ class ProductoForm(forms.ModelForm):
 
 class PedidoForm(forms.ModelForm):
     direccion_envio = forms.ModelChoiceField(
-        queryset=Direcciones.objects.all(),
+        queryset=Direcciones.objects.none(),
         widget=forms.Select(attrs={'class': 'form-control'}),
         label="Dirección de Envío"
     )
@@ -31,3 +43,9 @@ class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
         fields = ['direccion_envio', 'metodo_pago']
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Extraer el usuario del contexto
+        super().__init__(*args, **kwargs)
+        if user:
+            # Filtrar direcciones según el usuario
+            self.fields['direccion_envio'].queryset = Direcciones.objects.filter(usuario_id=user)
