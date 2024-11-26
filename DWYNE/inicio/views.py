@@ -1,15 +1,16 @@
 # En nombre_de_la_app/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserRegistrationForm, LoginForm, ProductoForm
+from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
-from .models import Producto
+from .models import Producto, Direcciones, Pedido, DetallePedido
 
 
 def index(request):
     if not request.user.is_authenticated:
-        return render(request, 'inicio/index.html')
+        productos = Producto.objects.all()
+        return render(request, 'inicio/index.html',{'productos': productos})
     if request.user.user_type == 'usuario':
         productos = Producto.objects.all()
         return render(request, 'inicio/indexusr.html',{'productos': productos})
@@ -25,14 +26,15 @@ def product(request):
         productos = Producto.objects.all()
         return render(request, 'inicio/product.html',{'productos': productos})
 
-def detalle_producto(request, identificador):
+def detalle_producto(request, id):
     if not request.user.is_authenticated:
-        return render(request, 'inicio/index.html')
+        producto = get_object_or_404(Producto, id=id)
+        return render(request, 'inicio/detalle_producto.html', {'producto': producto})
     if request.user.user_type == 'usuario':
-        producto = get_object_or_404(Producto, identificador=identificador)
+        producto = get_object_or_404(Producto, id=id)
         return render(request, 'inicio/detalle_producto.html', {'producto': producto})
     if request.user.user_type == 'admin':
-        producto = get_object_or_404(Producto, identificador=identificador)
+        producto = get_object_or_404(Producto, id=id)
         return render(request, 'inicio/detalle_producto.html', {'producto': producto})
 
 def vendedores(request):
@@ -123,3 +125,68 @@ def producto_delete(request, pk):
         return redirect('product')
     return render(request, 'inicio/confirmar_borrar.html', {'producto': producto})
 
+def add_to_cart(request, product_id):
+    cart = request.session.get('cart', {})
+    cart[product_id] = cart.get(product_id, 0) + 1
+    request.session['cart'] = cart  
+    return redirect('detalle_producto',id=product_id)
+
+def carrito(request):
+    cart = request.session.get('cart', {})
+    products = Producto.objects.filter(id__in=cart.keys())
+    cart_items = [
+        {'product': product, 'quantity': cart[str(product.id)], 'subtotal': product.precio * cart[str(product.id)]}
+        for product in products
+    ]
+    total = sum(item['subtotal'] for item in cart_items)
+    return render(request, 'inicio/cart.html', {'cart_items': cart_items, 'total': total})
+
+def eliminar_del_carrito(request, producto_id):
+    cart = request.session.get('cart', {})
+    if str(producto_id) in cart:
+        del cart[str(producto_id)]
+    request.session['cart'] = cart
+    return redirect('carrito')
+
+def pedido_exitoso(request):
+    return render(request, 'pedido_exitoso.html')
+
+def procesar_pedido(request):
+    cart = request.session.get('cart', {})
+    if not cart:
+        messages.error(request, "Tu carrito está vacío. No se puede procesar el pedido.")
+        return redirect('carrito')
+
+    if request.method == 'POST':
+        form = PedidoForm(request.POST)
+        if form.is_valid():
+            # Guardar el pedido
+            pedido = form.save(commit=False)
+            pedido.usuario = request.user
+            pedido.total = sum(
+                Producto.objects.get(id=prod_id).precio * cantidad
+                for prod_id, cantidad in cart.items()
+            )
+            pedido.save()
+
+            # Guardar los detalles del pedido
+            for prod_id, cantidad in cart.items():
+                producto = Producto.objects.get(id=prod_id)
+                DetallePedido.objects.create(
+                    pedido=pedido,
+                    producto=producto,
+                    cantidad=cantidad,
+                    subtotal=producto.precio * cantidad
+                )
+                # Actualizar inventario
+                producto.cantidad -= cantidad
+                producto.save()
+
+            # Limpiar el carrito
+            request.session['cart'] = {}
+            messages.success(request, f"Pedido procesado exitosamente. Total: ${pedido.total:.2f}")
+            return redirect('pedido_exitoso')
+    else:
+        form = PedidoForm()
+
+    return render(request, 'procesar_pedido.html', {'form': form})

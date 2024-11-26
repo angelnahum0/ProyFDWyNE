@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Producto
+from .models import User, Producto, Pedido, Direcciones
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -16,3 +16,18 @@ class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ['titulo', 'descripcion', 'precio', 'imagen', 'video']
+
+class PedidoForm(forms.ModelForm):
+    direccion_envio = forms.ModelChoiceField(
+        queryset=Direcciones.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Dirección de Envío"
+    )
+    metodo_pago = forms.ChoiceField(
+        choices=Pedido.METODOS_PAGO,
+        widget=forms.RadioSelect,
+        label="Método de Pago"
+    )
+    class Meta:
+        model = Pedido
+        fields = ['direccion_envio', 'metodo_pago']

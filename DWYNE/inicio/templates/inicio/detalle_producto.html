@@ -15,14 +15,14 @@
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><p>Bienvenido, {{ user.full_name }}!</p></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% else %}
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'about' %}">Nosotros</a></li>
             <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="">Carrito</a></li>
-            <li><p>Bienvenido, {{ user.full_name }}!</p></li>
+            <li><a href="{% url 'carrito' %}">Carrito</a></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% endif %}
             {% else %}
@@ -38,8 +38,9 @@
         <h1>{{ producto.titulo }}</h1>
         <p>{{ producto.descripcion }}</p>
         <p>Precio: ${{ producto.precio }}</p>
+        <p>Cantidad:{{ producto.stock}}</p>
         {% if producto.imagen %}
-            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}">
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="50%">
         {% endif %}
         {% if producto.video %}
             <video controls>
@@ -47,7 +48,7 @@
                 Tu navegador no soporta el elemento de video.
             </video>
         {% endif %}
-        <a href="">Agregar al carrito</a>
+        <a href="{% url 'add_to_cart' producto.id %}">Agregar al carrito</a>
         <a href="{% url 'product' %}">Volver a la lista de productos</a>
 </div>
 

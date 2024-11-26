@@ -15,7 +15,7 @@
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
 
             {% if user.is_authenticated %}
-            <li><p>Bienvenido, {{ user.full_name }}!</p></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
         </ul>
     </nav>

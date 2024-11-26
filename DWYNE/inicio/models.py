@@ -51,18 +51,23 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
-
 class Producto(models.Model):
-    identificador = models.IntegerField(unique=True)  # Identificador numérico único del producto
-    titulo = models.CharField(max_length=100)         # Título del producto
-    descripcion = models.TextField()                  # Descripción detallada
-    precio = models.DecimalField(max_digits=10, decimal_places=2)  # Precio con 2 decimales
-    cantidad = models.IntegerField(default=1)                   # Cantidad en stock
-    imagen = models.ImageField(upload_to='productos_imagenes/', blank=True, null=True)  # Imagen principal
-    video = models.FileField(upload_to='productos_videos/', blank=True, null=True)      # Video promocional
+    titulo = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.IntegerField(default=1)  # Renombrado de 'cantidad'
+    imagen = models.ImageField(upload_to='productos_imagenes/', blank=True, null=True)
+    video = models.FileField(upload_to='productos_videos/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.identificador} - {self.titulo}"
+        return f"{self.id} - {self.titulo}"
+
+    def reduce_stock(self, quantity):
+        if self.stock >= quantity:
+            self.stock -= quantity
+            self.save()
+        else:
+            raise ValueError("Stock insuficiente.")
 
 class Vendedores(models.Model):
     identificador = models.IntegerField(unique=True)
@@ -74,9 +79,9 @@ class Vendedores(models.Model):
     correo = models.EmailField(unique=True)
     def __str__(self):
         return self.nombre + self.apellidopat + self.apellidomat
-
-class Direcciones(models.Model):
-    identificador = models.IntegerField(unique=True)
+    
+class Direcciones(models.Model):  # Renombrado a singular
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relacionar con el usuario
     codpos = models.IntegerField()
     ciudad = models.CharField(max_length=30)
     colonia = models.CharField(max_length=30)
@@ -84,22 +89,38 @@ class Direcciones(models.Model):
 
     def __str__(self):
         return f"{self.calle}, {self.colonia}, {self.ciudad}"
+    
+class Pedido(models.Model):
+    ESTADOS = [
+        ('pendiente', 'Pendiente'),
+        ('procesando', 'Procesando'),
+        ('enviado', 'Enviado'),
+        ('completado', 'Completado'),
+        ('cancelado', 'Cancelado'),
+    ]
+    METODOS_PAGO = [
+        ('tarjeta', 'Tarjeta de Crédito/Débito'),
+        ('transferencia', 'Transferencia Bancaria'),
+        ('contra_entrega', 'Pago Contra Entrega'),
+    ]
 
-class Ventas(models.Model):
-    identificador = models.IntegerField(unique=True)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación con Usuario
-    producto = models.IntegerField()  # Si tienes un modelo de Producto, lo podrías usar como ForeignKey
-    direccion = models.ForeignKey(Direcciones, on_delete=models.CASCADE)  # Relación con Direcciones
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    direccion_envio = models.ForeignKey('Direcciones', on_delete=models.CASCADE)
+    metodo_pago = models.CharField(max_length=20, choices=METODOS_PAGO)
+    estado = models.CharField(max_length=15, choices=ESTADOS, default='pendiente')
+    fecha_pedido = models.DateTimeField(auto_now_add=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Pedido {self.id} - {self.usuario} - {self.estado}"
+
+class DetallePedido(models.Model):
+    pedido = models.ForeignKey(Pedido, related_name='detalles', on_delete=models.CASCADE)
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
     cantidad = models.IntegerField()
-    fecha = models.DateField(auto_now_add=True)
-    total = models.DecimalField(max_digits=20, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"Venta {self.identificador} - {self.usuario} - {self.total}"
+        return f"Producto {self.producto.titulo} - Pedido {self.pedido.id}"
 
-class UserDir(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)  # Relación con Usuario
-    direccion = models.ForeignKey(Direcciones, on_delete=models.CASCADE, unique=True)  # Relación con Direcciones
 
-    def __str__(self):
-        return f"{self.usuario} - {self.direccion}"

@@ -16,6 +16,20 @@
             <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
             <li><a href="{% url 'register' %}">Registrate</a></li>
         </ul>
-    </nav>    
+    </nav>  
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Precio</th>
+            <th>Imagen</th>
+        </tr>
+        {% for producto in productos %}
+        <tr>
+            <td> <a href="{% url 'detalle_producto' producto.id %}">{{ producto.titulo }}</a></td>
+            <td>{{ producto.precio }}</td>
+            <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+        </tr>
+        {% endfor %}  
+    </table>
 </body>
 </html>

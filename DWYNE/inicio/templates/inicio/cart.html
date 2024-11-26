@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{producto.titulo}}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            {% if user.is_authenticated %}
+            {% if user.user_type == "admin" %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
+            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="">Carrito</a></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% endif %}
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
+            <li><a href="{% url 'register' %}">Registrate</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+<div>
+        {% if cart_items %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item.product.titulo }}</td>
+                            <td>${{ item.product.precio }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.subtotal }}</td>
+                            <td>
+                                <form method="POST" action="{% url 'eliminar_del_carrito' item.product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Total:</strong></td>
+                        <td>${{ total }}</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <form method="POST" action="{% url 'procesar_pedido' %}">
+                {% csrf_token %}
+                <button type="submit">Procesar Pedido</button>
+            </form>
+        {% else %}
+            <p>Tu carrito está vacío. <a href="{% url 'index' %}">¡Agrega productos!</a></p>
+        {% endif %}
+</div>
+
+</body>
+</html>

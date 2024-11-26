@@ -10,12 +10,19 @@
 <body>
     <nav>
         <ul>
+            <li><a href="{% url 'index' %}">logo</a></li>
+            <li>
+                <input type="search" placeholder="Buscar Producto">
+                <button>Buscar</button>
+            </li>
+        </ul>
+        <ul>
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'about' %}">Nosotros</a></li>
             <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="">Carrito</a></li>
+            <li><a href="{% url 'carrito' %}">Carrito</a></li>
             {% if user.is_authenticated %}
-            <li><p>Bienvenido, {{ user.full_name }}!</p></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
         </ul>
     </nav>
@@ -27,7 +34,7 @@
         </tr>
         {% for producto in productos %}
         <tr>
-            <td> <a href="{% url 'detalle_producto' producto.identificador %}">{{ producto.titulo }}</a></td>
+            <td> <a href="{% url 'detalle_producto' producto.id %}">{{ producto.titulo }}</a></td>
             <td>{{ producto.precio }}</td>
             <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
         </tr>
