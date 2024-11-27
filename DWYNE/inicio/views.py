@@ -1,9 +1,9 @@
 # En nombre_de_la_app/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm
+from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm, UserEditForm, PasswordCambioForm
 from django.contrib import messages
 from django.contrib.auth.models import Group
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponseBadRequest
 from .models import Producto, Direcciones, Pedido, DetallePedido
 
@@ -235,3 +235,61 @@ def procesar_pedido(request):
         form = PedidoForm(user=request.user)  # Pasa el usuario aquí
 
     return render(request, 'inicio/procesar_pedido.html', {'form': form})
+
+def mi_cuenta(request):
+    return render(request, 'inicio/user_account.html')
+
+def editar_perfil(request):
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil actualizado exitosamente.')
+            return redirect('mi_cuenta')
+    else:
+        form = UserEditForm(instance=request.user)
+    return render(request, 'inicio/editar_perfil.html', {'form': form})
+
+def cambiar_password(request):
+    if request.method == 'POST':
+        form = PasswordCambioForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, 'Contraseña actualizada exitosamente.')
+            return redirect('mi_cuenta')
+    else:
+        form = PasswordCambioForm(user=request.user)
+    return render(request, 'inicio/cambiar_password.html', {'form': form})
+
+def mis_pedidos(request):
+    pedidos = Pedido.objects.filter(usuario=request.user)
+    return render(request, 'inicio/mis_pedidos.html', {'pedidos': pedidos})
+
+def detalle_pedido(request, id):
+    pedido = get_object_or_404(Pedido, id=id)
+    return render(request, 'inicio/detalle_pedido.html', {'pedido': pedido})
+
+def mis_direcciones(request):
+    direcciones = Direcciones.objects.filter(usuario=request.user)
+    return render(request, 'inicio/mis_direcciones.html', {'direcciones': direcciones})
+
+def editar_direccion(request, id):
+    direccion = get_object_or_404(Direcciones, id=id)
+    if request.method == 'POST':
+        form = DireccionesForm(request.POST, instance=direccion)
+        if form.is_valid():
+            form.save()
+            return redirect('mis_direcciones')
+    else:
+        form = DireccionesForm(instance=direccion)
+    return render(request, 'inicio/editar_direccion.html', {'form': form})
+
+def borrar_direccion(request, id):
+    direccion = get_object_or_404(Direcciones, id=id)
+    if request.method == 'POST':
+        direccion.delete()
+        return redirect('mis_direcciones')
+    return render(request, 'inicio/confirmar_borrar_direccion.html', {'direccion': direccion})
+
+

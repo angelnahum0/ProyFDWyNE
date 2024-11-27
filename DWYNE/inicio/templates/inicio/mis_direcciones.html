@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi cuenta</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">logo</a></li>
+            <li>
+                <input type="search" placeholder="Buscar Producto">
+                <button>Buscar</button>
+            </li>
+        </ul>
+        <ul>
+            {% if user.is_authenticated %}
+            {% if user.user_type == "admin" %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
+            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="{% url 'carrito' %}">Carrito</a></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% endif %}
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
+            <li><a href="{% url 'register' %}">Registrate</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    <table>
+        <tr>
+            <th>Codigo Postal</th>
+            <th>Ciudad</th>
+            <th>Colonia</th>
+            <th>Calle</th>
+            <th>Acciones</th>
+        </tr>
+        {% for direccion in direcciones %}
+        <tr>
+        <td>{{direccion.codpos}}</td>
+        <td>{{direccion.ciudad}}</td>
+        <td>{{direccion.colonia}}</td>
+        <td>{{direccion.calle}}</td>
+
+        <td>
+            <a href="{% url 'editar_direccion' direccion.id %}">Editar</a>
+            <a href="{% url 'borrar_direccion' direccion.id %}">Eliminar</a>
+        </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'agregar_direccion' %}">Agregar Direcciones</a>
+    
+    </body>
+</html>

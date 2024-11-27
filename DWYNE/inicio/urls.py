@@ -25,6 +25,14 @@ urlpatterns = [
     path('pedido/exitoso/', views.pedido_exitoso, name='pedido_exitoso'),
     path('direccion/agregar/', views.agregar_direccion, name='agregar_direccion'),
     path('agregar_producto/', views.agregar_producto, name='agregar_producto'),
+    path('mi_cuenta/', views.mi_cuenta, name='mi_cuenta'),
+    path('mi_cuenta/editar/', views.editar_perfil, name='editar_perfil'),
+    path('mi_cuenta/cambiar_password/', views.cambiar_password, name='cambiar_password'),
+    path('mi_cuenta/mis_pedidos/', views.mis_pedidos, name='mis_pedidos'),
+    path('mi_cuenta/mis_pedidos/<int:id>/', views.detalle_pedido, name='detalle_pedido'),
+    path('mi_cuenta/mis_direcciones/', views.mis_direcciones, name='mis_direcciones'),
+    path('mi_cuenta/mis_direcciones/<int:id>/', views.editar_direccion, name='editar_direccion'),
+    path('mi_cuenta/mis_direcciones/borrar/<int:id>/', views.borrar_direccion, name='borrar_direccion'),
 ]
 
 if settings.DEBUG:

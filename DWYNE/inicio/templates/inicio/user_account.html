@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi cuenta</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">logo</a></li>
+            <li>
+                <input type="search" placeholder="Buscar Producto">
+                <button>Buscar</button>
+            </li>
+        </ul>
+        <ul>
+            {% if user.is_authenticated %}
+            {% if user.user_type == "admin" %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
+            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="{% url 'carrito' %}">Carrito</a></li>
+            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            {% endif %}
+            {% else %}
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'about' %}">Nosotros</a></li>
+            <li><a href="{% url 'contact' %}">Contacto</a></li>
+            <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
+            <li><a href="{% url 'register' %}">Registrate</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <h1>Mi cuenta</h1>
+    <p>Nombre: {{ user.full_name }}</p>
+    <p>Correo: {{ user.email }}</p>
+    <a href="{% url 'mis_direcciones' %}">Ver Direcciones</a>
+    <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
+    <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
+    </body>
+</html>

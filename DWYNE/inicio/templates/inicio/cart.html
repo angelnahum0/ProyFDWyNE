@@ -21,14 +21,14 @@
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% else %}
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'about' %}">Nosotros</a></li>
             <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="">Carrito</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'carrito' %}">Carrito</a></li>
+            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% endif %}
             {% else %}

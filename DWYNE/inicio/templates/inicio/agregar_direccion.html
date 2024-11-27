@@ -22,7 +22,7 @@
             <li><a href="{% url 'contact' %}">Contacto</a></li>
             <li><a href="{% url 'carrito' %}">Carrito</a></li>
             {% if user.is_authenticated %}
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% endif %}
         </ul>
@@ -33,6 +33,6 @@
         {{ form.as_p }}
         <button type="submit">Guardar Dirección</button>
     </form>
-    <a href="{% url 'procesar_pedido' %}">Volver al Pedido</a>
+    <a href="{% url 'mis_direcciones' %}">Volver a direcciones</a>
 </body>
 </html>
