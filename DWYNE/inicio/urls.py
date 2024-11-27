@@ -24,6 +24,7 @@ urlpatterns = [
     path('carrito/procesar/', views.procesar_pedido, name='procesar_pedido'),
     path('pedido/exitoso/', views.pedido_exitoso, name='pedido_exitoso'),
     path('direccion/agregar/', views.agregar_direccion, name='agregar_direccion'),
+    path('agregar_producto/', views.agregar_producto, name='agregar_producto'),
 ]
 
 if settings.DEBUG:

@@ -163,6 +163,15 @@ def agregar_direccion(request):
 
 def pedido_exitoso(request):
     return render(request, 'inicio/pedido_exitoso.html')
+def agregar_producto(request):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('product')
+    else:
+        form = ProductoForm()
+    return render(request, 'inicio/agregar_producto.html', {'form': form})
 
 def procesar_pedido(request):
     cart = request.session.get('cart', {})
