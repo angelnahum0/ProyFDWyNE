@@ -12,8 +12,11 @@
         <ul>
             <li><a href="{% url 'index' %}">logo</a></li>
             <li>
-                <input type="search" placeholder="Buscar Producto">
-                <button>Buscar</button>
+                <form method="get" action="{% url 'buscar_productos' %}" class="search-form">
+                    {{ search_form.query.label_tag }}
+                    {{ search_form.query }}
+                    <button type="submit">Buscar</button>
+                </form>
             </li>
         </ul>
         <ul>
@@ -22,14 +25,14 @@
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% else %}
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'about' %}">Nosotros</a></li>
             <li><a href="{% url 'contact' %}">Contacto</a></li>
             <li><a href="{% url 'carrito' %}">Carrito</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% endif %}
             {% else %}
@@ -41,11 +44,20 @@
             {% endif %}
         </ul>
     </nav>
+    {% if user.user_type == "usuario" %}
     <h1>Mi cuenta</h1>
+    <a href="{% url 'mis_pedidos' %}">Mis pedidos</a>
     <p>Nombre: {{ user.full_name }}</p>
     <p>Correo: {{ user.email }}</p>
     <a href="{% url 'mis_direcciones' %}">Ver Direcciones</a>
     <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
     <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
+    {% endif %}
+    {% if user.user_type == "admin" %}
+    <p>Nombre: {{ user.full_name }}</p>
+    <p>Correo: {{ user.email }}</p>
+    <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
+    <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
+    {% endif %}
     </body>
 </html>

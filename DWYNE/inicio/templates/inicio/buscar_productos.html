@@ -1,10 +1,9 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Producto</title>
+    <title>Buqueda</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -25,7 +24,7 @@
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
+            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
             {% else %}
             <li><a href="{% url 'index' %}">Inicio</a></li>
@@ -44,13 +43,28 @@
             {% endif %}
         </ul>
     </nav>
+<div>
+    {% if productos %}
+    <h2>Resultados:</h2>
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Precio</th>
+            <th>Imagen</th>
+        </tr>
+        {% for producto in productos %}
+        <tr>
+            <td> <a href="{% url 'detalle_producto' producto.id %}">{{ producto.titulo }}</a></td>
+            <td>{{ producto.precio }}</td>
+            <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </ul>
+    {% elif productos is not None %}
+    <p>No se encontraron productos.</p>
+    {% endif %}
+</div>
 
-
-    <h1>Editar Perfil</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar cambios</button>
-    </form>
 </body>
 </html>

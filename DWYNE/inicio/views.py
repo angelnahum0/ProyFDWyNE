@@ -1,6 +1,6 @@
 # En nombre_de_la_app/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm, UserEditForm, PasswordCambioForm
+from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm, UserEditForm, PasswordCambioForm, SearchForm
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -293,3 +293,13 @@ def borrar_direccion(request, id):
     return render(request, 'inicio/confirmar_borrar_direccion.html', {'direccion': direccion})
 
 
+def buscar_productos(request):
+    form = SearchForm(request.GET or None)
+    productos = None
+
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        if query:
+            productos = Producto.objects.filter(titulo__icontains=query)
+
+    return render(request, 'inicio/buscar_productos.html', {'form': form, 'productos': productos})

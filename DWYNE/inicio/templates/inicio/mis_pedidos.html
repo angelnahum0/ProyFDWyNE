@@ -4,7 +4,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Producto</title>
+    <title>Mi Proyecto</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -20,37 +20,35 @@
             </li>
         </ul>
         <ul>
-            {% if user.is_authenticated %}
-            {% if user.user_type == "admin" %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
-            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-            {% else %}
             <li><a href="{% url 'index' %}">Inicio</a></li>
             <li><a href="{% url 'about' %}">Nosotros</a></li>
             <li><a href="{% url 'contact' %}">Contacto</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'carrito' %}">Carrito</a></li>
             <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
             <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-            {% endif %}
             {% else %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'about' %}">Nosotros</a></li>
-            <li><a href="{% url 'contact' %}">Contacto</a></li>
             <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
             <li><a href="{% url 'register' %}">Registrate</a></li>
             {% endif %}
         </ul>
     </nav>
+    <table>
+        <tr>
+            <th>Estado</th>
+            <th>Direccion</th>
+            <th>Total</th>
+            <th>Fecha pedido</th>
 
-
-    <h1>Editar Perfil</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar cambios</button>
-    </form>
+        </tr>
+        {% for pedido in pedidos %}
+        <tr>
+            <td>{{ pedido.estado }}</td>
+            <td>{{ pedido.direccion_envio }}</td>
+            <td>${{ pedido.total }}</td>
+            <td>{{ pedido.fecha_pedido }}</td>
+        </tr>
+        {% endfor %}  
+    </table>
 </body>
 </html>

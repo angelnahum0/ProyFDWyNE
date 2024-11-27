@@ -11,7 +11,10 @@ class UserRegistrationForm(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.EmailField(label='Correo electrónico', widget=forms.EmailInput(attrs={'placeholder': 'Correo electrónico'}))
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
-    
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label='', max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'Buscar Productos'})) 
+
 class DireccionesForm(forms.ModelForm):
     class Meta:
         model = Direcciones

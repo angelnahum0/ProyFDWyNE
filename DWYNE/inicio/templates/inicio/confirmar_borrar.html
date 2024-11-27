@@ -12,8 +12,11 @@
         <ul>
             <li><a href="{% url 'index' %}">logo</a></li>
             <li>
-                <input type="search" placeholder="Buscar Producto">
-                <button>Buscar</button>
+                <form method="get" action="{% url 'buscar_productos' %}" class="search-form">
+                    {{ search_form.query.label_tag }}
+                    {{ search_form.query }}
+                    <button type="submit">Buscar</button>
+                </form>
             </li>
 
         </ul>

@@ -33,6 +33,7 @@ urlpatterns = [
     path('mi_cuenta/mis_direcciones/', views.mis_direcciones, name='mis_direcciones'),
     path('mi_cuenta/mis_direcciones/<int:id>/', views.editar_direccion, name='editar_direccion'),
     path('mi_cuenta/mis_direcciones/borrar/<int:id>/', views.borrar_direccion, name='borrar_direccion'),
+    path('buscar/', views.buscar_productos, name='buscar_productos'),
 ]
 
 if settings.DEBUG:
