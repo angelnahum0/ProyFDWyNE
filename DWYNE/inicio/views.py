@@ -4,6 +4,7 @@ from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, Di
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseBadRequest
 from .models import Producto, Direcciones, Pedido, DetallePedido
 
 
@@ -125,11 +126,30 @@ def producto_delete(request, pk):
         return redirect('product')
     return render(request, 'inicio/confirmar_borrar.html', {'producto': producto})
 
+
 def add_to_cart(request, product_id):
-    cart = request.session.get('cart', {})
-    cart[product_id] = cart.get(product_id, 0) + 1
-    request.session['cart'] = cart  
-    return redirect('detalle_producto',id=product_id)
+    if request.method == 'POST':
+        try:
+            cantidad = int(request.POST.get('cantidad', 1))
+        except ValueError:
+            return HttpResponseBadRequest("Cantidad no válida")
+        
+        producto = get_object_or_404(Producto, id=product_id)  # Asegúrate de tener el modelo Producto
+        if cantidad > producto.stock:
+            messages.error(request, f"No puedes agregar más de {producto.stock} unidades.")
+            return redirect('detalle_producto', id=product_id)
+        
+        cart = request.session.get('cart', {})
+        if str(product_id) in cart:
+            cart[str(product_id)] += cantidad
+        else:
+            cart[str(product_id)] = cantidad
+        
+        request.session['cart'] = cart
+        messages.success(request, f"{cantidad} unidades añadidas al carrito.")
+        return redirect('detalle_producto', id=product_id)
+    else:
+        return HttpResponseBadRequest("Método no permitido")
 
 def carrito(request):
     cart = request.session.get('cart', {})
@@ -163,6 +183,7 @@ def agregar_direccion(request):
 
 def pedido_exitoso(request):
     return render(request, 'inicio/pedido_exitoso.html')
+
 def agregar_producto(request):
     if request.method == 'POST':
         form = ProductoForm(request.POST, request.FILES)

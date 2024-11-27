@@ -27,7 +27,7 @@ class DireccionesForm(forms.ModelForm):
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['titulo', 'descripcion', 'precio', 'imagen', 'video']
+        fields = ['titulo', 'descripcion', 'precio','stock', 'imagen', 'video']
 
 class PedidoForm(forms.ModelForm):
     direccion_envio = forms.ModelChoiceField(

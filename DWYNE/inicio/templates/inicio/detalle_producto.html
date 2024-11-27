@@ -58,7 +58,12 @@
         {% if producto.stock == 0 %}
             <p>Producto agotado</p>
         {% else %}
-            <a href="{% url 'add_to_cart' producto.id %}">Agregar al carrito</a>
+            <p>Quedan {{ producto.stock }} unidades</p>
+            <form action="{% url 'add_to_cart' producto.id %}" method="post">
+                {% csrf_token %}
+                <input type="number" name="cantidad" value="1" min="1" max="{{ producto.stock }}">
+                <button type="submit">Agregar al carrito</button>
+            </form>
         {% endif %}
         <a href="{% url 'index' %}">Volver a la lista de productos</a>
 </div>
