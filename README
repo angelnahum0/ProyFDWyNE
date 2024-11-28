@@ -5,7 +5,7 @@ PosgreSQL
 visual C++ 2014 en adelante
 
 //ejecutar este comando en powershell administrador
-set-ExecutionPo1icy Unrestricted
+set-ExecutionPolicy Unrestricted
 
 
 python -m pip install virtualenv
