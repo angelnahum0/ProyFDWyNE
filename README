@@ -2,6 +2,7 @@ PARA USAR ESTE PROYECTO SE TENDRA QUE HACER LO SIGUIENTE
 Intalar
 python  (cambiar las variables de entorno para ejecutar python)
 PosgreSQL 
+visual C++ 2014 en adelante
 
 python -m pip install virtualenv
 python -m venv venv
