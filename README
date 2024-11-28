@@ -4,10 +4,13 @@ python  (cambiar las variables de entorno para ejecutar python)
 PosgreSQL 
 visual C++ 2014 en adelante
 
+//ejecutar este comando en powershell administrador
+set-ExecutionPo1icy Unrestricted
+
+
 python -m pip install virtualenv
 python -m venv venv
-//ejecutar este comando en powershell administrador
-set-ExecutionP01icy Unrestricted
+
 venv/Scripts/Activate
 cd DWYNE
 pip install django
