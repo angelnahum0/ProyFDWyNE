@@ -58,7 +58,7 @@ class Producto(models.Model):
     stock = models.IntegerField(default=1)  # Renombrado de 'cantidad'
     imagen = models.ImageField(upload_to='productos_imagenes/', blank=True, null=True)
     video = models.FileField(upload_to='productos_videos/', blank=True, null=True)
-
+    keywords = models.TextField(help_text="Palabras clave separadas por comas")  # Ejemplo: "amor, chocolate, regalo"
     def __str__(self):
         return f"{self.id} - {self.titulo}"
 

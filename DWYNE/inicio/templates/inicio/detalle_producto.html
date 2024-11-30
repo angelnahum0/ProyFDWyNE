@@ -69,6 +69,23 @@
             </form>
         {% endif %}
         <a href="{% url 'index' %}">Volver a la lista de productos</a>
+        {% if datos %}
+        <h2>Comparador de precios</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for dato in datos %}
+                    <tr>
+                        <td>{{ dato.title }}</td>
+                        <td>{{ dato.price }}</td>
+                    </tr>
+        {% endfor %}
+        {% endif %}
 </div>
 
 </body>

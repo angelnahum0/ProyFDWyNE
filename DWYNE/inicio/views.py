@@ -6,6 +6,9 @@ from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponseBadRequest
 from .models import Producto, Direcciones, Pedido, DetallePedido
+import requests
+from bs4 import BeautifulSoup
+from django.http import JsonResponse
 
 
 def index(request):
@@ -33,7 +36,41 @@ def detalle_producto(request, id):
         return render(request, 'inicio/detalle_producto.html', {'producto': producto})
     if request.user.user_type == 'usuario':
         producto = get_object_or_404(Producto, id=id)
-        return render(request, 'inicio/detalle_producto.html', {'producto': producto})
+        keywords = producto.keywords.split(',')
+        url = "https://unelefante.mx/collections/regalos-de-amor-y-aniversario"
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Encuentra los contenedores de productos
+        products = soup.find_all('div', class_='product-collection__content')
+        scraped_data = []
+
+        for product in products:
+            # Extraer el título del producto
+            title = product.find('h4', class_='h6 m-0').text.strip() if product.find('h4', class_='h6 m-0') else 'Título no disponible'
+
+            # Extraer descripción del producto
+            description_container = product.find('div', class_='product-collection__description')
+            description = description_container.find('p', class_='m-0').text.strip() if description_container else 'Descripción no disponible'
+            matches = [keyword for keyword in keywords if keyword.lower() in description.lower()]
+
+            # Extraer el precio del producto
+            price_container = product.find('div', class_='product-collection__price')
+            price = price_container.find('span', class_='money').text.strip() if price_container else 'Precio no disponible'
+            price_value = float(price.replace('$', '').replace(',', '').strip()) if price != 'Precio no disponible' else 0
+            producto_precio = float(producto.precio)
+            if len(matches) > 0:
+                if price_value > producto_precio:
+                    scraped_data.append({
+                        'title': title,
+                        'description': description,
+                        'matches' : matches,
+                        'price': price,
+                    })
+
+        # Retorna los datos en formato JSON
+        return render(request, 'inicio/detalle_producto.html', {'producto': producto, 'datos': scraped_data})
+    
     if request.user.user_type == 'admin':
         producto = get_object_or_404(Producto, id=id)
         return render(request, 'inicio/detalle_producto.html', {'producto': producto})
@@ -303,3 +340,38 @@ def buscar_productos(request):
             productos = Producto.objects.filter(titulo__icontains=query)
 
     return render(request, 'inicio/buscar_productos.html', {'form': form, 'productos': productos})
+
+def scrape_view(request):
+    # URL del sitio web
+    url = "https://unelefante.mx/collections/regalos-de-amor-y-aniversario"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Encuentra los contenedores de productos
+    products = soup.find_all('div', class_='product-collection__content')
+    scraped_data = []
+
+    for product in products:
+        # Extraer el título del producto
+        producto = get_object_or_404(Producto, id=4)
+        keywords = producto.keywords.split(',')
+        title = product.find('h4', class_='h6 m-0').text.strip() if product.find('h4', class_='h6 m-0') else 'Título no disponible'
+
+        # Extraer descripción del producto
+        description_container = product.find('div', class_='product-collection__description')
+        description = description_container.find('p', class_='m-0').text.strip() if description_container else 'Descripción no disponible'
+        matches = [keyword for keyword in keywords if keyword.lower() in description.lower()]
+        # Extraer el precio del producto
+        price_container = product.find('div', class_='product-collection__price')
+        price = price_container.find('span', class_='money').text.strip() if price_container else 'Precio no disponible'
+
+        # Agregar datos al listado
+        scraped_data.append({
+            'title': title,
+            'description': description,
+            'matches' : matches,
+            'price': price,
+        })
+
+    # Retorna los datos en formato JSON
+    return JsonResponse({'products': scraped_data})
