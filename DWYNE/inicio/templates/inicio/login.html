@@ -1,39 +1,27 @@
-{% load static %}
+{% extends 'inicio/base.html' %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>login</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">logo</a></li>
-            <li>
-                <form method="get" action="{% url 'buscar_productos' %}" class="search-form">
-                    {{ search_form.query.label_tag }}
-                    {{ search_form.query }}
-                    <button type="submit">Buscar</button>
-                </form>
-            </li>
-        </ul>
-        <ul>
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'about' %}">Nosotros</a></li>
-            <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
-            <li><a href="{% url 'register' %}">Registrate</a></li>
-        </ul>
-    </nav>
+{% block title %}
+<title>{{producto.titulo}}</title>
+{% endblock %}
+
+{% block content %}
     <div>
         <form method="post">
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="alert 
+                        {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Iniciar sesión</button>
         </form>
         <a href="{% url 'register' %}">¿No tienes cuenta? Regístrate aquí</a>
     </div>
-</body>
-</html>
+
+{% endblock %}

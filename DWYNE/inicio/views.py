@@ -2,7 +2,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm, UserEditForm, PasswordCambioForm, SearchForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponseBadRequest
 from .models import Producto, Direcciones, Pedido, DetallePedido
@@ -12,20 +14,14 @@ from django.http import JsonResponse
 
 
 def index(request):
-    if not request.user.is_authenticated:
-        productos = Producto.objects.all()
-        return render(request, 'inicio/index.html',{'productos': productos})
-    if request.user.user_type == 'usuario':
-        productos = Producto.objects.all()
-        return render(request, 'inicio/indexusr.html',{'productos': productos})
-    if request.user.user_type == 'admin':
-        return render(request, 'inicio/indexadmin.html' )
+    productos = Producto.objects.all()
+    return render(request, 'inicio/index.html',{'productos': productos})
     
 def product(request):
     if not request.user.is_authenticated:
         return render(request, 'inicio/index.html')
     if request.user.user_type == 'usuario':
-        return render(request, 'inicio/indexusr.html')
+        redirect('index')
     if request.user.user_type == 'admin':
         productos = Producto.objects.all()
         return render(request, 'inicio/product.html',{'productos': productos})
@@ -187,7 +183,7 @@ def add_to_cart(request, product_id):
         return redirect('detalle_producto', id=product_id)
     else:
         return HttpResponseBadRequest("Método no permitido")
-
+@login_required
 def carrito(request):
     cart = request.session.get('cart', {})
     products = Producto.objects.filter(id__in=cart.keys())
@@ -375,3 +371,10 @@ def scrape_view(request):
 
     # Retorna los datos en formato JSON
     return JsonResponse({'products': scraped_data})
+
+class CustomLoginView(LoginView):
+    template_name = 'inicio/login.html'
+
+    def get_redirect_url(self):
+        next_url = self.request.GET.get('next')
+        return next_url or super().get_redirect_url()

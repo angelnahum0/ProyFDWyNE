@@ -1,34 +1,12 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Mi Proyecto</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">logo</a></li>
-        </ul>
-        <ul>
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
-            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-        </ul>
-    </nav>
+{% extends 'inicio/base.html' %}
+{% block title %}
+<title>Administrador</title>
+{% endblock %}
+{% block content %}
     {% if user.user_type == "admin" %}
         <h1>user type, {{user.user_type}}</h1>
     {% else %}
         <h1>USUARIO SIN PERMISO</h1>
         <a href="{% url 'index' %}">Volver a Inicio</a>
     {% endif %}
-    {% endif %}
-    
-</body>
-</html>
+{% endblock %}

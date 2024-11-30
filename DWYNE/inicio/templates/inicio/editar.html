@@ -1,39 +1,13 @@
-{% load static %}
+{% extends 'inicio/base.html' %}
+{% block title %}
+<title>Editar Producto</title>
+{% endblock %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Producto</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">logo</a></li>
-            <li>
-                <form method="get" action="{% url 'buscar_productos' %}" class="search-form">
-                    {{ search_form.query.label_tag }}
-                    {{ search_form.query }}
-                    <button type="submit">Buscar</button>
-                </form>
-            </li>
-        </ul>
-        <ul>
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
-            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-        </ul>
-    </nav>
-
-
+{% block content %}
     <h1>Editar Producto</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Guardar cambios</button>
     </form>
-</body>
-</html>
+{% endblock %}

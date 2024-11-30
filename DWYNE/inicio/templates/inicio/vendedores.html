@@ -1,31 +1,9 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Mi Proyecto</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">logo</a></li>
-            <li>
-                <input type="search" placeholder="Buscar Producto">
-                <button>Buscar</button>
-            </li>
-        </ul>
-        <ul>
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
-            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-        </ul>
-    </nav>
+{% extends 'inicio/base.html' %}
+{% block title %}
+<title>Vendedores</title>
+{% endblock %}
+{% block content %}
     <div>
-        <h1>Contacto</h1>
+        <h1>Vendedores</h1>
     </div>
-</body>
-</html>
+{% endblock %}

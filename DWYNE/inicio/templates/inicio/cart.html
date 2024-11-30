@@ -1,49 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Carrito</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">logo</a></li>
-            <li>
-                <form method="get" action="{% url 'buscar_productos' %}" class="search-form">
-                    {{ search_form.query.label_tag }}
-                    {{ search_form.query }}
-                    <button type="submit">Buscar</button>
-                </form>
-            </li>
-        </ul>
-        <ul>
-            {% if user.is_authenticated %}
-            {% if user.user_type == "admin" %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
-            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-            {% else %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'about' %}">Nosotros</a></li>
-            <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="{% url 'carrito' %}">Carrito</a></li>
-            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-            {% endif %}
-            {% else %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'about' %}">Nosotros</a></li>
-            <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
-            <li><a href="{% url 'register' %}">Registrate</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-<div>
+{% extends 'inicio/base.html' %}
+
+{% block title %}
+<title>Carrito</title>
+{% endblock %}
+{% block content %}
         {% if cart_items %}
             <table>
                 <thead>
@@ -87,6 +47,4 @@
             <p>Tu carrito está vacío. <a href="{% url 'index' %}">¡Agrega productos!</a></p>
         {% endif %}
 </div>
-
-</body>
-</html>
+{% endblock %}

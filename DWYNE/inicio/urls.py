@@ -3,6 +3,7 @@ from django.urls import path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from inicio.views import CustomLoginView
 from . import views
 
 urlpatterns = [
@@ -10,7 +11,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('login/', views.user_login, name='login'),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', views.register, name='register'),
     path('logout/', views.user_logout, name='logout'),
     path('product/', views.product, name='product'),

@@ -1,11 +1,18 @@
 from django import forms
 from .models import User, Producto, Pedido, Direcciones
+from django.core.exceptions import ValidationError
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = User
         fields = ['email', 'full_name', 'password']
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        # Verifica si el correo ya está registrado
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('Este correo ya está registrado. Usa otro correo.')
+        return email
 
 
 class LoginForm(forms.Form):
@@ -106,3 +113,32 @@ class PasswordCambioForm(forms.Form):
         if commit:
             self.user.save()
         return self.user
+    
+    
+
+class ActualizarEstadoProductoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = ['estado']
+
+    def __init__(self, *args, **kwargs):
+        trabajador = kwargs.pop('trabajador', None)
+        super().__init__(*args, **kwargs)
+        if trabajador:
+            # Filtra los estados según el rol del trabajador
+            if trabajador.rol == 'Almacenista':
+                self.fields['estado'].choices = [
+                    ('pendiente', 'Pendiente'),
+                    ('procesando', 'Procesando'),
+                ]
+            elif trabajador.rol == 'repartidor':
+                self.fields['estado'].choices = [
+                    ('enviado', 'Enviado'),
+                    ('completado', 'Completado'),
+                ]
+            elif trabajador.rol == 'gerente':
+                self.fields['estado'].choices = [
+                    ('enviado', 'Enviado'),
+                    ('completado', 'Completado'),
+                    ('cancelado', 'Cancelado'),
+                ]

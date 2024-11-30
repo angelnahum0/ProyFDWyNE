@@ -1,51 +1,8 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Producto</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">logo</a></li>
-            <li>
-                <form method="get" action="{% url 'buscar_productos' %}" class="search-form">
-                    {{ search_form.query.label_tag }}
-                    {{ search_form.query }}
-                    <button type="submit">Buscar</button>
-                </form>
-            </li>
-
-        </ul>
-        <ul>
-            {% if user.is_authenticated %}
-            {% if user.user_type == "admin" %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
-            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-            {% else %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'about' %}">Nosotros</a></li>
-            <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="{% url 'carrito' %}">Carrito</a></li>
-            <li><a href="">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-            {% endif %}
-            {% else %}
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'about' %}">Nosotros</a></li>
-            <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="{% url 'login' %}">Iniciar sesion</a></li>
-            <li><a href="{% url 'register' %}">Registrate</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-
+{% extends 'inicio/base.html' %}
+{% block title %}
+<title>Borrar Direccion</title>
+{% endblock %}
+{% block content %}
 <h1>¿Estás seguro de que deseas eliminar esta dirreccion?</h1>
 <p>Codigo Postal: {{ direccion.codpos }}</p>
 <p>Ciudad: {{ direccion.ciudad }}</p>
@@ -56,5 +13,4 @@
     <button type="submit">Confirmar</button>
     <a href="{% url 'product' %}">Cancelar</a>
 </form>
-</body>
-</html>
+{% endblock %}

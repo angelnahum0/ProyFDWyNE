@@ -1,0 +1,15 @@
+{% extends 'inicio/base.html' %}
+
+{% block title %}
+<title>Editar dirección</title>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar Cambios</button>
+        </form> 
+    </div>
+{% endblock %}

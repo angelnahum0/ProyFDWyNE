@@ -69,7 +69,13 @@ class Producto(models.Model):
         else:
             raise ValueError("Stock insuficiente.")
 
-class Vendedores(models.Model):
+class Trabajadores(models.Model):
+    ROLES = [
+        ('operador', 'Operador'),
+        ('supervisor', 'Supervisor'),
+        ('gerente', 'Gerente'),
+    ]
+
     identificador = models.IntegerField(unique=True)
     nombre = models.CharField(max_length=30)
     apellidopat = models.CharField(max_length=30)
@@ -77,8 +83,10 @@ class Vendedores(models.Model):
     puesto = models.CharField(max_length=25)
     salario = models.DecimalField(max_digits=20, decimal_places=2)
     correo = models.EmailField(unique=True)
+    rol = models.CharField(max_length=15, choices=ROLES, default='operador')
+
     def __str__(self):
-        return self.nombre + self.apellidopat + self.apellidomat
+        return f"{self.nombre} {self.apellidopat} {self.apellidomat}"
     
 class Direcciones(models.Model):  # Renombrado a singular
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relacionar con el usuario

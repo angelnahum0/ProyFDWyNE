@@ -1,35 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Dirección</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'index' %}">logo</a></li>
-            <li>
-                <form method="get" action="{% url 'buscar_productos' %}" class="search-form">
-                    {{ search_form.query.label_tag }}
-                    {{ search_form.query }}
-                    <button type="submit">Buscar</button>
-                </form>
-            </li>
-        </ul>
-        <ul>
-            <li><a href="{% url 'index' %}">Inicio</a></li>
-            <li><a href="{% url 'about' %}">Nosotros</a></li>
-            <li><a href="{% url 'contact' %}">Contacto</a></li>
-            <li><a href="{% url 'carrito' %}">Carrito</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'mi_cuenta' %}">Bienvenido, {{ user.full_name }}!</a></li>
-            <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+{% extends 'inicio/base.html' %}
+{% block title %}
+<title>Agregar Dirección</title>
+{% endblock %}
+{% block content %}
     <h1>Agregar Nueva Dirección</h1>
     <form method="post">
         {% csrf_token %}
@@ -37,5 +10,4 @@
         <button type="submit">Guardar Dirección</button>
     </form>
     <a href="{% url 'mis_direcciones' %}">Volver a direcciones</a>
-</body>
-</html>
+{% endblock %}
