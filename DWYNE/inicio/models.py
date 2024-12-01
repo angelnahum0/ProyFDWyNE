@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
+#modelos de la base de datos
+
+# modelo de usuario
 class UserManager(BaseUserManager):
     def create_user(self, email, full_name, password=None, **extra_fields):
         if not email:
@@ -10,7 +13,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-
+    # Crear superusuario
     def create_superuser(self, email, full_name, password=None, **extra_fields):
         extra_fields.setdefault('is_admin', True)
         extra_fields.setdefault('is_superuser', True)
@@ -20,7 +23,7 @@ class UserManager(BaseUserManager):
         user = self.create_user(email, full_name, password, **extra_fields)
         user.save(using=self._db)
         return user
-
+# Crear modelo de usuario
 class User(AbstractBaseUser):
     USER_TYPES = (
         ('admin', 'Admin'),
@@ -51,6 +54,7 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+#modelo de producto
 class Producto(models.Model):
     titulo = models.CharField(max_length=100)
     descripcion = models.TextField()
@@ -68,7 +72,7 @@ class Producto(models.Model):
             self.save()
         else:
             raise ValueError("Stock insuficiente.")
-
+#modelo de trabajadores
 class Trabajadores(models.Model):
     ROLES = [
         ('almacenista', 'Almacenista'),
@@ -86,7 +90,7 @@ class Trabajadores(models.Model):
 
     def __str__(self):
         return f"{self.nombre} {self.apellidopat} {self.apellidomat}"
-    
+#modelo de direcciones
 class Direcciones(models.Model):  # Renombrado a singular
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relacionar con el usuario
     codpos = models.IntegerField()
@@ -96,7 +100,8 @@ class Direcciones(models.Model):  # Renombrado a singular
 
     def __str__(self):
         return f"{self.calle}, {self.colonia}, {self.ciudad}"
-    
+
+#modelo de pedidos
 class Pedido(models.Model):
     ESTADOS = [
         ('pendiente', 'Pendiente'),
@@ -121,6 +126,7 @@ class Pedido(models.Model):
     def __str__(self):
         return f"Pedido {self.id} - {self.usuario} - {self.estado}"
 
+#modelo de detalles de pedidos
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, related_name='detalles', on_delete=models.CASCADE)
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE)

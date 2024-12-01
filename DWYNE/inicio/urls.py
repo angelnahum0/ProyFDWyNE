@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from inicio.views import CustomLoginView
 from . import views
 
+# urls que se usan en la aplicación
 urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
@@ -40,7 +41,6 @@ urlpatterns = [
     path('pedidos/<int:id>/actualizar_pedido/', views.actualizar_estado_pedido, name='actualizar_pedido'),
     path('editar_vendedor/<int:id>/', views.editar_vendedor, name='editar_vendedor'),
     path('borrar_vendedor/<int:id>/', views.borrar_vendedor, name='borrar_vendedor'),
-    
     path('scrape/', views.scrape_view, name='scrape'),
     
 ]

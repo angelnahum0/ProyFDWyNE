@@ -2,6 +2,9 @@ from django import forms
 from .models import User, Producto, Pedido, Direcciones, Trabajadores
 from django.core.exceptions import ValidationError
 
+#formularios usados para los registros de usuarios, login, busqueda, direcciones, edicion de usuario, productos, pedidos, cambio de contraseña, actualizacion de estado de productos y trabajadores
+
+#formulario de registro de usuario
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
@@ -14,14 +17,16 @@ class UserRegistrationForm(forms.ModelForm):
             raise ValidationError('Este correo ya está registrado. Usa otro correo.')
         return email
 
-
+#formulario de login
 class LoginForm(forms.Form):
     email = forms.EmailField(label='Correo electrónico', widget=forms.EmailInput(attrs={'placeholder': 'Correo electrónico'}))
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
 
+#formulario de busqueda
 class SearchForm(forms.Form):
     query = forms.CharField(label='', max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'Buscar Productos'})) 
 
+#formulario de direcciones
 class DireccionesForm(forms.ModelForm):
     class Meta:
         model = Direcciones
@@ -32,6 +37,7 @@ class DireccionesForm(forms.ModelForm):
             'colonia': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Colonia'}),
             'calle': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Calle y numero'}),
         }
+#formulario de edicion de usuario
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
@@ -40,12 +46,12 @@ class UserEditForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo Electrónico'}),
             'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre Completo'}),
         }
-
+#formulario de productos
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ['titulo', 'descripcion', 'precio','stock', 'imagen', 'video', 'keywords']
-
+#formulario de pedidos
 class PedidoForm(forms.ModelForm):
     direccion_envio = forms.ModelChoiceField(
         queryset=Direcciones.objects.none(),
@@ -67,6 +73,7 @@ class PedidoForm(forms.ModelForm):
             # Filtrar direcciones según el usuario
             self.fields['direccion_envio'].queryset = Direcciones.objects.filter(usuario_id=user)
 
+#formulario de cambio de contraseña
 class PasswordCambioForm(forms.Form):
     old_password = forms.CharField(
         label="Contraseña actual",
@@ -115,7 +122,7 @@ class PasswordCambioForm(forms.Form):
         return self.user
     
     
-
+#formulario de actualizacion de estado de productos
 class ActualizarEstadoProductoForm(forms.ModelForm):
     class Meta:
         model = Pedido
@@ -142,7 +149,7 @@ class ActualizarEstadoProductoForm(forms.ModelForm):
                     ('completado', 'Completado'),
                     ('cancelado', 'Cancelado'),
                 ]
-
+#formulario de actualizacion de trabajadores
 class TrabajadorForm(forms.ModelForm):
     class Meta:
         model = Trabajadores
