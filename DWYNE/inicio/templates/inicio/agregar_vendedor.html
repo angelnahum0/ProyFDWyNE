@@ -1,0 +1,16 @@
+{% extends 'inicio/base.html' %}
+{% block title %}
+<title>Agregar Vendedor</title>
+{% endblock %}
+{% block content %}
+    <form method="POST" >
+        |{% csrf_token %}
+        <h3>Formulario de Usuario</h3>
+        {{ usuario_form.as_p }}
+
+        <h3>Formulario de Trabajador</h3>
+        {{ trabajador_form.as_p }}
+
+        <button type="submit">Agregar Trabajador</button>
+    </form>
+{% endblock %}

@@ -71,16 +71,15 @@ class Producto(models.Model):
 
 class Trabajadores(models.Model):
     ROLES = [
-        ('operador', 'Operador'),
-        ('supervisor', 'Supervisor'),
+        ('almacenista', 'Almacenista'),
+        ('repartidor', 'Repartidor'),
         ('gerente', 'Gerente'),
     ]
-
-    identificador = models.IntegerField(unique=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)  # Relación uno a uno
     nombre = models.CharField(max_length=30)
     apellidopat = models.CharField(max_length=30)
     apellidomat = models.CharField(max_length=30)
-    puesto = models.CharField(max_length=25)
+    correo = models.EmailField(unique=True)
     salario = models.DecimalField(max_digits=20, decimal_places=2)
     correo = models.EmailField(unique=True)
     rol = models.CharField(max_length=15, choices=ROLES, default='operador')

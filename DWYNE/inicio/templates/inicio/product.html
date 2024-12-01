@@ -14,7 +14,9 @@
             <tr>
                 <td>{{ producto.titulo }}</td>
                 <td>{{ producto.precio }}</td>
-                <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+                {% if producto.imagen %}
+                    <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+                {% endif %}
                 <td>
                     <a href="{% url 'producto_edit' producto.id %}">Editar</a>
                     <a href="{% url 'producto_delete' producto.id %}">Borrar</a>

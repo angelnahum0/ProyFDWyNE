@@ -7,7 +7,6 @@ from inicio.views import CustomLoginView
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
@@ -18,7 +17,6 @@ urlpatterns = [
     path('productos/<int:id>/', views.detalle_producto, name='detalle_producto'),
     path('productos/editar/<int:pk>/', views.producto_edit, name='producto_edit'),
     path('productos/borrar/<int:pk>/', views.producto_delete, name='producto_delete'),
-    path('vendedores/', views.vendedores, name='vendedores'),
     path('carrito/', views.carrito, name='carrito'),
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('carrito/eliminar/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
@@ -35,7 +33,16 @@ urlpatterns = [
     path('mi_cuenta/mis_direcciones/<int:id>/', views.editar_direccion, name='editar_direccion'),
     path('mi_cuenta/mis_direcciones/borrar/<int:id>/', views.borrar_direccion, name='borrar_direccion'),
     path('buscar/', views.buscar_productos, name='buscar_productos'),
+    path('vendedores/', views.vendedores, name='vendedores'),
+    path('vendedores/<int:id>/', views.vendedor, name='vendedor'),
+    path('agregar_vendedor/', views.agregar_vendedor, name='agregar_vendedor'),
+    path('pedidos/<int:id>/', views.detalle_pedido, name='pedidos'),
+    path('pedidos/<int:id>/actualizar_pedido/', views.actualizar_estado_pedido, name='actualizar_pedido'),
+    path('editar_vendedor/<int:id>/', views.editar_vendedor, name='editar_vendedor'),
+    path('borrar_vendedor/<int:id>/', views.borrar_vendedor, name='borrar_vendedor'),
+    
     path('scrape/', views.scrape_view, name='scrape'),
+    
 ]
 
 if settings.DEBUG:

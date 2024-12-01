@@ -1,0 +1,29 @@
+{% extends 'inicio/base.html' %}
+{% block title %}
+<title>{{pedido.id}}</title>
+{% endblock %}
+{% block content %}
+    <div>
+        {% if pedido %}
+            {% if user.user_type == "usuario" %}
+            <h1>Detalle del pedido {{pedido.id}}</h1>
+            <p>Fecha: {{pedido.fecha_pedido}}</p>
+            <p>Cliente: {{pedido.usuario}}</p>
+            <p>Direccion: {{pedido.direccion_envio}}</p>
+            <p>Forma de pago : {{pedido.metodo_pago}}</p>
+            <p>Total: {{pedido.total}}</p>
+            <p>Estado: {{pedido.estado}}</p>
+            {% elif user.user_type == "vendedor" %}
+            <h1>Detalle del pedido {{pedido.id}}</h1>
+            <p>Fecha: {{pedido.fecha_pedido}}</p>
+            <p>Cliente: {{pedido.usuario}}</p>
+            <p>Direccion: {{pedido.direccion_envio}}</p>
+            <p>Forma de pago : {{pedido.metodo_pago}}</p>
+            <p>Total: {{pedido.total}}</p>
+            <p>Estado: {{pedido.estado}}</p>
+            <a href="actualizar_pedido">Actualizar estado</a>
+            {% endif %}
+        {% else %}
+            <p>No se encontró el pedido</p>
+        {% endif %}
+{% endblock %}

@@ -18,4 +18,10 @@
     <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
     <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
     {% endif %}
+    {% if user.user_type == "vendedor" %}
+    <p>Nombre: {{ user.full_name }}</p>
+    <p>Correo: {{ user.email }}</p>
+    <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
+    <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
+    {% endif %}
 {% endblock %}

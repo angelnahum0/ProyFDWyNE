@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Producto, Pedido, Direcciones
+from .models import User, Producto, Pedido, Direcciones, Trabajadores
 from django.core.exceptions import ValidationError
 
 class UserRegistrationForm(forms.ModelForm):
@@ -126,7 +126,7 @@ class ActualizarEstadoProductoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if trabajador:
             # Filtra los estados según el rol del trabajador
-            if trabajador.rol == 'Almacenista':
+            if trabajador.rol == 'almacenista':
                 self.fields['estado'].choices = [
                     ('pendiente', 'Pendiente'),
                     ('procesando', 'Procesando'),
@@ -142,3 +142,18 @@ class ActualizarEstadoProductoForm(forms.ModelForm):
                     ('completado', 'Completado'),
                     ('cancelado', 'Cancelado'),
                 ]
+
+class TrabajadorForm(forms.ModelForm):
+    class Meta:
+        model = Trabajadores
+        fields = [ 'nombre', 'apellidopat', 'apellidomat', 'salario', 'correo', 'rol']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'apellidopat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido Paterno'}),
+            'apellidomat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido Materno'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo Electrónico'}),
+            'salario': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Salario'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo Electrónico'}),
+            'rol': forms.Select(attrs={'class': 'form-control'}),
+        }
+        usuario = forms.ModelChoiceField(queryset=User.objects.filter(user_type='vendedor'), required=False)

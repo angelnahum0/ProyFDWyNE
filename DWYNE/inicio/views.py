@@ -1,30 +1,41 @@
 # En nombre_de_la_app/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm, UserEditForm, PasswordCambioForm, SearchForm
+from .forms import UserRegistrationForm, LoginForm, ProductoForm, PedidoForm, DireccionesForm, UserEditForm, PasswordCambioForm, SearchForm, ActualizarEstadoProductoForm, TrabajadorForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponseBadRequest
-from .models import Producto, Direcciones, Pedido, DetallePedido
+from .models import Producto, Direcciones, Pedido, DetallePedido, Trabajadores
 import requests
 from bs4 import BeautifulSoup
 from django.http import JsonResponse
 
 
 def index(request):
-    productos = Producto.objects.all()
-    return render(request, 'inicio/index.html',{'productos': productos})
-    
+    if not request.user.is_authenticated:
+        productos = Producto.objects.all()
+        return render(request, 'inicio/index.html',{'productos': productos})
+    if request.user.user_type == 'usuario':
+        productos = Producto.objects.all()
+        return render(request, 'inicio/index.html',{'productos': productos})
+    if request.user.user_type == 'admin':
+        return render(request, 'inicio/index.html')
+    if request.user.user_type == 'vendedor':
+        pedidos = Pedido.objects.all()
+        return render(request, 'inicio/index.html', {'pedidos': pedidos} )
+@login_required
 def product(request):
     if not request.user.is_authenticated:
-        return render(request, 'inicio/index.html')
+        return redirect('index')
     if request.user.user_type == 'usuario':
-        redirect('index')
+        return redirect('index')
     if request.user.user_type == 'admin':
         productos = Producto.objects.all()
         return render(request, 'inicio/product.html',{'productos': productos})
+
+
 
 def detalle_producto(request, id):
     if not request.user.is_authenticated:
@@ -70,31 +81,91 @@ def detalle_producto(request, id):
     if request.user.user_type == 'admin':
         producto = get_object_or_404(Producto, id=id)
         return render(request, 'inicio/detalle_producto.html', {'producto': producto})
-
+    
+@login_required
 def vendedores(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.user.user_type == 'usuario':
+        return redirect('index')
+    if request.user.user_type == 'admin':
+        vendedores = Trabajadores.objects.all()
+        return render(request, 'inicio/vendedores.html', {'vendedores': vendedores})
+@login_required
+def vendedor(request):
     if not request.user.is_authenticated:
         return render(request, 'inicio/index.html')
     if request.user.user_type == 'usuario':
         return render(request, 'inicio/indexusr.html')
     if request.user.user_type == 'admin':
         return render(request, 'inicio/vendedores.html')
-
-def adminbdcompradores(request):
+@login_required
+def agregar_vendedor(request):
     if not request.user.is_authenticated:
         return render(request, 'inicio/index.html')
     if request.user.user_type == 'usuario':
         return render(request, 'inicio/indexusr.html')
     if request.user.user_type == 'admin':
-        return render(request, 'inicio/bdcompradores.html')
+        if request.method == 'POST':
+            usuario_form = UserRegistrationForm(request.POST)
+            trabajador_form = TrabajadorForm(request.POST)
+            
+            if usuario_form.is_valid() and trabajador_form.is_valid():
+                # Guardar el Usuario
+                usuario = usuario_form.save(commit=False)
+                usuario.set_password(usuario_form.cleaned_data['password'])  # Cifra la contraseña
+                usuario.user_type = 'vendedor'
+                usuario = usuario_form.save()
+                
+                # Crear y guardar el Trabajador con la relación con el Usuario
+                trabajador = trabajador_form.save(commit=False)
+                trabajador.usuario = usuario
+                trabajador.save()
+                
+                return redirect('vendedores')  # Redirigir a una página de éxito
+            
+        else:
+            usuario_form = UserRegistrationForm()
+            trabajador_form = TrabajadorForm()
+
+        return render(request, 'inicio/agregar_vendedor.html', {'usuario_form': usuario_form, 'trabajador_form': trabajador_form})
+    
+@login_required
+def borrar_vendedor(request, id):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.user.user_type == 'usuario':
+        return redirect('index')
+    if request.user.user_type == 'admin':
+        vendedor = get_object_or_404(Trabajadores, id=id)
+        if request.method == 'POST':
+            vendedor.delete()
+            return redirect('vendedores')
+        return render(request, 'inicio/confirmar_borrar_trabajador.html', {'vendedor': vendedor})
+@login_required
+def editar_vendedor(request, id):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.user.user_type == 'usuario':
+        return redirect('index')
+    if request.user.user_type == 'admin':
+        vendedor = get_object_or_404(Trabajadores, id=id)  # Obtener el trabajador
+        if request.method == 'POST':
+            trabajador_form = TrabajadorForm(request.POST, instance=vendedor)  # Solo editar el trabajador
+            if trabajador_form.is_valid():
+                trabajador_form.save()  # Guardar los cambios en el trabajador
+                
+                return redirect('vendedores')  # Redirigir a la lista de vendedores o donde desees
+        else:
+            # Mostrar el formulario con los datos actuales del trabajador
+            trabajador_form = TrabajadorForm(instance=vendedor)
+
+        return render(request, 'inicio/editar_trabajador.html', {'trabajador_form': trabajador_form})
+
 
 def about(request):
     return render(request, 'inicio/about.html')
 
-def contact(request):
-    return render(request, 'inicio/contact.html')
-
-def contact(request):
-    return render(request, 'inicio/contact.html')
 def contact(request):
     return render(request, 'inicio/contact.html')
 
@@ -137,27 +208,38 @@ def register(request):
         form = UserRegistrationForm()
 
     return render(request, 'inicio/register.html', {'form': form})
+
 def user_logout(request):
     logout(request)
     return redirect('login')  # Redirige a la página de login después de cerrar sesión
 
 def producto_edit(request, pk):
-    producto = get_object_or_404(Producto, pk=pk)
-    if request.method == 'POST':
-        form = ProductoForm(request.POST, request.FILES, instance=producto)
-        if form.is_valid():
-            form.save()
-            return redirect('product')
-    else:
-        form = ProductoForm(instance=producto)
-    return render(request, 'inicio/editar.html', {'form': form})
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.user.user_type == 'usuario':
+        return redirect('index')
+    if request.user.user_type == 'admin':
+        producto = get_object_or_404(Producto, pk=pk)
+        if request.method == 'POST':
+            form = ProductoForm(request.POST, request.FILES, instance=producto)
+            if form.is_valid():
+                form.save()
+                return redirect('product')
+        else:
+            form = ProductoForm(instance=producto)
+        return render(request, 'inicio/editar.html', {'form': form})
 
 def producto_delete(request, pk):
-    producto = get_object_or_404(Producto, pk=pk)
-    if request.method == 'POST':
-        producto.delete()
-        return redirect('product')
-    return render(request, 'inicio/confirmar_borrar.html', {'producto': producto})
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.user.user_type == 'usuario':
+        return redirect('index')
+    if request.user.user_type == 'admin':
+        producto = get_object_or_404(Producto, pk=pk)
+        if request.method == 'POST':
+            producto.delete()
+            return redirect('product')
+        return render(request, 'inicio/confirmar_borrar.html', {'producto': producto})
 
 
 def add_to_cart(request, product_id):
@@ -200,7 +282,7 @@ def eliminar_del_carrito(request, producto_id):
         del cart[str(producto_id)]
     request.session['cart'] = cart
     return redirect('carrito')
-
+@login_required
 def agregar_direccion(request):
     if request.method == 'POST':
         form = DireccionesForm(request.POST)
@@ -299,6 +381,19 @@ def mis_pedidos(request):
     pedidos = Pedido.objects.filter(usuario=request.user)
     return render(request, 'inicio/mis_pedidos.html', {'pedidos': pedidos})
 
+def actualizar_estado_pedido(request, id):
+    pedido = get_object_or_404(Pedido, id=id)
+    trabajador = Trabajadores.objects.get(usuario=request.user)
+    form = ActualizarEstadoProductoForm(request.POST, trabajador=trabajador, instance=pedido)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = ActualizarEstadoProductoForm(instance=pedido, trabajador=trabajador)
+    return render(request, 'inicio/actualizar_pedido.html', {'form': form})
+
+
 def detalle_pedido(request, id):
     pedido = get_object_or_404(Pedido, id=id)
     return render(request, 'inicio/detalle_pedido.html', {'pedido': pedido})
@@ -378,3 +473,4 @@ class CustomLoginView(LoginView):
     def get_redirect_url(self):
         next_url = self.request.GET.get('next')
         return next_url or super().get_redirect_url()
+    

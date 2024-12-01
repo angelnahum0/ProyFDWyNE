@@ -10,7 +10,33 @@
             <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
             <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
         </ul>
-
+    {% elif user.user_type == "vendedor" %}
+        <h1>Bienvenido trabajador</h1>
+        <p>En esta sección puedes administrar los pedidos</p>
+        {% if pedidos %}
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Fecha</th>
+                <th>Método de Pago</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.fecha_pedido }}</td>
+                <td>{{ pedido.metodo_pago }}</td>
+                <td>{{ pedido.estado }}</td>
+                <td>
+                    <a href="{% url 'pedidos' pedido.id %}">Ver Detalles</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No hay pedidos pendientes, buen trabajo</p>
+        {% endif %}
     {% else %}
         {% if productos %}
         <table>
@@ -24,7 +50,9 @@
             <tr>
                 <td> <a href="{% url 'detalle_producto' producto.id %}">{{ producto.titulo }}</a></td>
                 <td> $ {{ producto.precio }}</td>
-                <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+                {% if producto.imagen %}
+                    <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
+                {% endif %}
                 <td>{{ producto.stock }}</td>
             </tr>
             {% endfor %}
