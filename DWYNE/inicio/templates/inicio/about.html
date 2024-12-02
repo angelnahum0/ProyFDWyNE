@@ -3,12 +3,13 @@
 <title>Sobre nosotros</title>
 {% endblock %}
 {% block content %}
+{% load static %}
 <div class="container text-center py-5">
 <h1 class="header-title">Arreglos de Flores y Suculentas</h1>
 </div>
 
 <div class="container col-md-6 text-center ">
-<img src="../media/img/nosotros.png" class="img-fluid" alt="Imagen de ejemplo">
+<img src="{% static 'img/nosotros.png' %}" class="img-fluid" alt="Imagen de ejemplo">
 </div>
 
 

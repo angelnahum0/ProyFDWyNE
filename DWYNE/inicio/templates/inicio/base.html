@@ -26,15 +26,15 @@
             <div class="container-fluid">
             {% if user.user_type == "admin" %}
             <a class="navbar-brand" href="{% url 'index' %}">
-                <img src="../media/img/logoSLTH.png" alt="logo" style="height: 100px;">
+                <img src="{% static 'img/logoSLTH.png' %}" alt="logo" style="height: 100px;">
             </a>
             {% elif user.user_type == "vendedor" %}
             <a class="navbar-brand" href="{% url 'index' %}">
-                <img src="../media/img/logoSLTH.png" alt="logo" style="height: 100px;">
+                <img src="{% static 'img/logoSLTH.png' %}" alt="logo" style="height: 100px;">
             </a>
             {% else %}
             <a class="navbar-brand" href="{% url 'index' %}">
-                <img src="../media/img/logoSLTH.png" alt="logo" style="height: 100px;">
+                <img src="{% static 'img/logoSLTH.png' %}" alt="logo" style="height: 100px;">
             </a>
                 <form method="get" action="{% url 'buscar_productos' %}" class="d-flex w-50">
                     {{ search_form.query.label_tag }}
@@ -108,34 +108,23 @@
         {% block content %}
         {% endblock %}
     {% if user.user_type == "usuario" %}
-        <footer class="bg-light py-5" style="margin-top: 30px;">
+        <footer class="bg-light py-3" style="margin-top: 30px;">
             <div class="container">
-                <div class="row">
-                    <!-- Suscripción -->
-                    <div class="col-md-3">
-                        <h5>SUSCRÍBETE A NUESTROS CORREOS</h5>
-                        <p class="text-muted">Entérate primero de lanzamientos de productos y recibe promociones exclusivas para suscriptores</p>
-                        <form>
-                            <div class="mb-3">
-                                <input type="email" class="form-control" placeholder="Ingresa tu Email">
-                            </div>
-                            <button type="submit" class="btn btn-dark">SUSCRIBIRME</button>
-                        </form>
-                    </div>
-    
+                <div class="row">    
                     <!-- Servicio al Cliente -->
                     <div class="col-md-3">
-                        <h5>SERVICIO AL CLIENTE</h5>
-                        <p><strong>Pickup de Pedidos</strong><br>
+                        <p><h5>Pickup de Pedidos</h5><br>
                             Plutarco Elías Calles 140 A2 Tampiquito<br>
                             66240, San Pedro - Nuevo León, Mx<br>
                             <a href="#" class="text-decoration-none">Ver en Google Maps</a>
                         </p>
-                        <p><strong>Atención a Clientes</strong><br>
-                            <i class="bi bi-telephone"></i> (81) 2620 0708<br>
+                    </div>
+                    <div class="col-md-3">
+                        <p><h5>Atención a Clientes</h5><br>
+                            <i class="bi bi-telephone"></i> 729 813 5657<br>
                             Lunes a Viernes de 9:00 am a 7:00 pm<br>
                             Sábado de 10:00 am a 2:00 pm<br>
-                            <a href="mailto:quiero@unelefante.mx" class="text-decoration-none">quiero@unelefante.mx</a>
+                            <a href="#" class="text-decoration-none">Doneedelamour@gmail.com</a>
                         </p>
                     </div>
     
@@ -143,23 +132,15 @@
                     <div class="col-md-2">
                         <h5>ASISTENCIA</h5>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-decoration-none">Pedidos + Pagos</a></li>
-                            <li><a href="#" class="text-decoration-none">Envíos</a></li>
-                            <li><a href="#" class="text-decoration-none">Factura Electrónica</a></li>
+                            <li><a href="{% url 'mis_pedidos' %}" class="text-decoration-none">Pedidos</a></li>
                         </ul>
                     </div>
     
                     <!-- Más Información -->
                     <div class="col-md-4">
-                        <h5>+ MÁS INFO</h5>
+                        <h5>MÁS INFO</h5>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-decoration-none">Nosotros</a></li>
-                            <li><a href="#" class="text-decoration-none">HAPPY CUSTOMERS</a></li>
-                            <li><a href="#" class="text-decoration-none">#REALINFLUENCERS</a></li>
-                            <li><a href="#" class="text-decoration-none">Blog + Prensa</a></li>
-                            <li><a href="#" class="text-decoration-none">Vende en Unelefante</a></li>
-                            <li><a href="#" class="text-decoration-none">Wholesale US & EU</a></li>
-                            <li><a href="#" class="text-decoration-none">Forma de Contacto</a></li>
+                            <li><a href="{% url 'about' %}" class="text-decoration-none">Nosotros</a></li>
                         </ul>
                     </div>
                 </div>
@@ -171,7 +152,7 @@
                 </div>
                 <div class="text-center mt-3 text-muted">
                     <p>ENVÍA REGALOS PERSONALIZADOS A MONTERREY O A TODO MÉXICO. SACA TU SONRISA MÁS AUTÉNTICA Y QUÉDATE EN SUS MEMORIAS MÁS BONITAS.</p>
-                    <p>Copyright © 2012 - 2023. Wundermatter S.A. de C.V. Todos los Derechos Reservados.</p>
+                    <p>Copyright © 2024. JKL S.A. de C.V. Todos los Derechos Reservados.</p>
                 </div>
             </div>
         </footer>
