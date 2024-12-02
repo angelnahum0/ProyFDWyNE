@@ -3,11 +3,46 @@
 <title>Confirmar Pedido</title>
 {% endblock %}
 {% block content %}
-    <h1>Confirmar Pedido</h1>
+<div class="container text-center py-5">
+    <h1 class="header-title">Confirmar Pedido</h1>
+</div>
+
+<div class="container text-center col-md-4">
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Procesar Pedido</button>
+        
+        <!-- Campo para la Dirección de Envío -->
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label for="id_direccion_envio" style="font-size: 25px;">Dirección de Envío:</label>
+            {{ form.direccion_envio }}
+            {% if form.direccion_envio.errors %}
+                <span class="text-danger">
+                    {{ form.direccion_envio.errors|first }}
+                </span>
+            {% endif %}
+        </div>
+    
+        <!-- Campo para el Método de Pago -->
+        <div class="form-group" style="margin-bottom: 30px; margin-bottom: 25px;">
+            <label for="id_metodo_pago" style="font-size: 25px;">Método de Pago:</label>
+            {{ form.metodo_pago }}
+            {% if form.metodo_pago.errors %}
+                <span class="text-danger">
+                    {{ form.metodo_pago.errors|first }}
+                </span>
+            {% endif %}
+        </div>
+    
+        <!-- Botón para procesar el pedido -->
+        <button type="submit" class="btn" style="background-color: #ff91c6; color: white; margin-bottom: 10px; font-size: 16px;">
+            Procesar pedido
+        </button>
     </form>
-    <a href="{% url 'carrito' %}">Volver al Carrito</a>
+    
+
+    <!-- Enlace para volver al carrito -->
+    <a href="{% url 'carrito' %}" class="btn" style="background-color: #ff91c6; color: white; margin-top: 10px;">
+        Volver al Carrito
+    </a>
+</div>
 {% endblock %}

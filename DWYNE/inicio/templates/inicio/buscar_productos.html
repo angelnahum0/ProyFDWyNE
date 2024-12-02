@@ -5,24 +5,37 @@
 {% block content %}
 <div>
     {% if productos %}
-    <h2>Resultados:</h2>
-    <table>
-        <tr>
-            <th>Título</th>
-            <th>Precio</th>
-            <th>Imagen</th>
-        </tr>
-        {% for producto in productos %}
-        <tr>
-            <td> <a href="{% url 'detalle_producto' producto.id %}">{{ producto.titulo }}</a></td>
-            <td>{{ producto.precio }}</td>
-            <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
-        </tr>
-        {% endfor %}
-    </table>
-    </ul>
+
+    <div class="container text-center py-5">
+        <h1 class="header-title">Resultados</h1>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center g-4">
+            {% for producto in productos%}
+                <div class="col-md-4">
+                    <div class="card product-card text-center" style="border: 5px solid #ffffff;">
+                        <a href="{% url 'detalle_producto' producto.id %}">
+                            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="card-img-top product-image">
+                        </a>
+                        <div class="card-body">
+                            <h5>{{ producto.titulo }}</h5>
+                            <p>{{ producto.descripcion }}</p>
+                            <p>{{ producto.precio }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
     {% elif productos is not None %}
-    <p>No se encontraron productos.</p>
+        <div class="container text-center py-5">
+            <h1 class="header-title">No se encontraron productos</h1>
+        </div>
+        
     {% endif %}
+
 </div>
 {% endblock %}

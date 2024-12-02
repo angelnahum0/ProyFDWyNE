@@ -3,13 +3,15 @@
 <title>Borrar trabajador</title>
 {% endblock %}
 {% block content %}
+<div class="container text-center py-5">
 <h1>¿Estás seguro de que deseas eliminar este vendedor?</h1>
 <p>Nombre: {{ vendedor.nombre }}</p>
 <p>Puesto: {{ vendedor.rol }}</p>
 <p>Salario: {{ vendedor.salario }}</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit">Confirmar</button>
-    <a href="{% url 'vendedores' %}">Cancelar</a>
+    <button type="submit" class="custom-btn">Confirmar</button>
+    <a href="{% url 'vendedores' %}" class="custom-btn">Cancelar</a>
 </form>
+</div>
 {% endblock %}

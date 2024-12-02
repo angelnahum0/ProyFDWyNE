@@ -4,47 +4,54 @@
 <title>Carrito</title>
 {% endblock %}
 {% block content %}
-        {% if cart_items %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio Unitario</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart_items %}
-                        <tr>
-                            <td>{{ item.product.titulo }}</td>
-                            <td>${{ item.product.precio }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>${{ item.subtotal }}</td>
-                            <td>
-                                <form method="POST" action="{% url 'eliminar_del_carrito' item.product.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3"><strong>Total:</strong></td>
-                        <td>${{ total }}</td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <form method="POST" action="{% url 'procesar_pedido' %}">
-                {% csrf_token %}
-                <button type="submit">Procesar Pedido</button>
-            </form>
-        {% else %}
-            <p>Tu carrito está vacío. <a href="{% url 'index' %}">¡Agrega productos!</a></p>
-        {% endif %}
+{% if cart_items %}
+<div class="container text-center py-5">
+    <h1 class="header-title">Carrito de compras</h1>
+</div>
+<div class="container my-7">
+    <div class="card" style="max-width: 600px; margin: auto; border: 5px solid #ffffff;">
+        {% for item in cart_items %}
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <a href="{% url 'detalle_producto' item.product.id %}">
+                        <img src="{{ item.product.imagen.url }}" alt="{{ item.product.titulo }}" class="card-img-top product-image">
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5>{{ item.product.titulo }}</h5>
+                        <p>{{ item.product.descripcion }}</p>
+                        <p>{{ item.product.precio }}</p>
+                        <p>Cantidad: {{ item.quantity }}</p>
+                        <p>Subtotal: {{ item.subtotal }}</p>
+                        <td>
+                            <form method="POST" action="{% url 'eliminar_del_carrito' item.product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn" style="background-color: #ff91c6; color: white;">Eliminar</button>
+                            </form>
+                        </td>
+                    </div>
+                </div>
+            </div>
+        {% endfor %} 
+    </div>
+</div>
+    <tfoot>
+        <div class="container text-center py-5">
+            <h1 class="header-title">Total: ${{ total }}</h1>
+        </div>
+    </tfoot>
+    <form method="POST" action="{% url 'procesar_pedido' %}">
+        {% csrf_token %}
+        <div style="text-align: center;">
+            <button type="submit" class="btn" style="background-color: #ff91c6; color: #ffffff; font-size: 25px;">Procesar Pedido</button>
+        </div>
+    </form>
+{% else %}
+    <div class="container text-center py-5">
+        <h1 class="header-title">Tu carrito está vacío. </h1>
+        <h1 class="header-title"><a href="{% url 'index' %}">¡Agrega productos!</a></h1>
+    </div>
+{% endif %}
 </div>
 {% endblock %}

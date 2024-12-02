@@ -3,25 +3,94 @@
 <title>Mi cuenta</title>
 {% endblock %}
 {% block content %}
-    {% if user.user_type == "usuario" %}
-    <h1>Mi cuenta</h1>
-    <a href="{% url 'mis_pedidos' %}">Mis pedidos</a>
-    <p>Nombre: {{ user.full_name }}</p>
-    <p>Correo: {{ user.email }}</p>
-    <a href="{% url 'mis_direcciones' %}">Ver Direcciones</a>
-    <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
-    <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
-    {% endif %}
-    {% if user.user_type == "admin" %}
-    <p>Nombre: {{ user.full_name }}</p>
-    <p>Correo: {{ user.email }}</p>
-    <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
-    <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
-    {% endif %}
-    {% if user.user_type == "vendedor" %}
-    <p>Nombre: {{ user.full_name }}</p>
-    <p>Correo: {{ user.email }}</p>
-    <a href="{% url 'editar_perfil' %}"> Editar Perfil</a>
-    <a href="{% url 'cambiar_password' %}">Cambiar contraseña</a>
-    {% endif %}
+{% if user.user_type == "usuario" %}
+
+<div class="container text-center py-5">
+    <div style="margin-bottom: 30px;">
+        <h1 class="header-title">Mi cuenta</h1>
+        <h5>Nombre: {{ user.name }}</h5>
+        <h5>Correo: {{ user.email }}</h5>
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'mis_pedidos' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Mis pedidos</button>
+        </a>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'mis_direcciones' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Mis direcciones</button>
+        </a>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'editar_perfil' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Editar perfil</button>
+        </a>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'cambiar_password' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Cambiar contraseña</button>
+        </a>
+    </div>
+
+</div>
+
+{% endif %}
+
+
+
+
+{% if user.user_type == "admin" %}
+
+<div class="container text-center py-5">
+    <div style="margin-bottom: 30px;">
+        <h1 class="header-title">Mi cuenta</h1>
+        <h5>Nombre: {{ user.name }}</h5>
+        <h5>Correo: {{ user.email }}</h5>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'editar_perfil' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Editar perfil</button>
+        </a>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'cambiar_password' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Cambiar contraseña</button>
+        </a>
+    </div>
+
+</div>
+
+{% endif %}
+
+
+{% if user.user_type == "vendedor" %}
+
+<div class="container text-center py-5">
+    <div style="margin-bottom: 30px;">
+        <h1 class="header-title">Mi cuenta</h1>
+        <h5>Nombre: {{ user.name }}</h5>
+        <h5>Correo: {{ user.email }}</h5>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'editar_perfil' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Editar perfil</button>
+        </a>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <a href="{% url 'cambiar_password' %}">
+            <button class="btn" style="background-color: #ff91c6; color: white;">Cambiar contraseña</button>
+        </a>
+    </div>
+
+</div>
+
+{% endif %}
 {% endblock %}

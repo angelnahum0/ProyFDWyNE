@@ -4,17 +4,26 @@
 {% endblock %}
 {% block content %}
     {% if user.user_type == "admin" %}
+    <div class="container text-center py-5">
         <h1>Bienvenido administrador</h1>
         <p>En esta sección puedes administrar la base de datos de productos y vendedores</p>
-        <ul>
-            <li><a href="{% url 'product' %}">Administrar Base de datos productos</a></li>
-            <li><a href="{% url 'vendedores' %}">Administrar Base de datos vendedores</a></li>
-        </ul>
+        <a href="{% url 'product' %}" class="btn me-2" 
+        style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+        onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+        onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Administrar Base de datos productos</a></li>
+        <a href="{% url 'vendedores' %}" class="btn me-2" 
+        style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+        onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+        onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Administrar Base de datos vendedores</a></li>
+        
+    </div>
     {% elif user.user_type == "vendedor" %}
+    <div class="container text-center py-5">
         <h1>Bienvenido trabajador</h1>
         <p>En esta sección puedes administrar los pedidos</p>
         {% if pedidos %}
-        <table>
+        <table class="table" style="border: 1px solid white; border-collapse: collapse;">
+            <thead>
             <tr>
                 <th>Id</th>
                 <th>Fecha</th>
@@ -22,7 +31,9 @@
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
+            </thead>
             {% for pedido in pedidos %}
+            <tbody>
             <tr>
                 <td>{{ pedido.id }}</td>
                 <td>{{ pedido.fecha_pedido }}</td>
@@ -32,31 +43,177 @@
                     <a href="{% url 'pedidos' pedido.id %}">Ver Detalles</a>
                 </td>
             </tr>
+            </tbody>
             {% endfor %}
         </table>
         {% else %}
         <p>No hay pedidos pendientes, buen trabajo</p>
         {% endif %}
+    </div>
     {% else %}
-        {% if productos %}
-        <table>
-            <tr>
-                <th>Título</th>
-                <th>Precio</th>
-                <th>Imagen</th>
-                <th>Cantidad</th>
-            </tr>
-            {% for producto in productos %}
-            <tr>
-                <td> <a href="{% url 'detalle_producto' producto.id %}">{{ producto.titulo }}</a></td>
-                <td> $ {{ producto.precio }}</td>
-                {% if producto.imagen %}
-                    <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
-                {% endif %}
-                <td>{{ producto.stock }}</td>
-            </tr>
+         <!--Imagen inicial de promociones, anuncios, etc-->
+
+    <div class="container col-md-12 text-center ">
+        <img src="../media/img/portada1.jpg" class="img-fluid" alt="Imagen de ejemplo">
+    </div>
+
+    <!--Texto para añadir el catalogo-->
+
+    <div class="container text-center py-5">
+        <h1 class="header-title">Los más vendidos</h1>
+    </div>
+
+    <!-- Malla de productos -->
+
+    <div class="container">
+        <div class="row justify-content-center g-4">
+            {% for producto in productos|slice:":5" %}
+                <div class="col-md-4">
+                    <div class="card product-card text-center" style="border: 5px solid #ffffff;">
+                        <a href="{% url 'detalle_producto' producto.id %}">
+                            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="card-img-top product-image">
+                        </a>
+                        <div class="card-body">
+                            <h5>{{ producto.titulo }}</h5>
+                            <p>{{ producto.descripcion }}</p>
+                            <p>{{ producto.precio }}</p>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        {% endif %}
+        </div>
+    </div>    
+
+    <!--Quienes somos-->
+
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <!-- Sección de imágenes -->
+            <div class="col-md-6 text-center">
+                <img src="../media/img/prom1.jpg" alt="Imagen portada regalos" class="product-image mb-4 img-separada">
+            </div>
+            <!-- Sección de texto -->
+            <div class="col-md-6 text-section">
+                <h1 class="fw-bold">ENVÍA FLORES Y SUCULENTAS</h1>  
+                <p>¿Buscas un regalo natural? Te encantarán los arreglos de flores Botánica y suculentas de la región en macetas muy simpáticas. Envía tus regalos a domicilio con Unelefante.</p>
+            </div>
+        </div>
+    </div>
+
+     <!--Beneficios-->
+
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Beneficios</h2>
+        <div class="row">
+            <!-- Beneficio 1 -->
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <img src="../media/img/logoEntrega.png" alt="Variedad de regalos" style="width: 50%; max-width: 100px; height: auto;">
+                    <div class="benefit-title">La más amplia variedad</div>
+                    <p class="benefit-description">de regalos, con colecciones y colaboraciones exclusivas con las marcas más reconocidas.</p>
+                </div>
+            </div>
+            <!-- Beneficio 2 -->
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <img src="../media/img/logoRegalo.png" alt="Entrega garantizada" style="width: 50%; max-width: 100px; height: auto;">
+                    <div class="benefit-title">Entrega garantizada</div>
+                    <p class="benefit-description">desde 3 horas en TODO México, con la flota dedicada más grande y confiable del país.</p>
+                </div>
+            </div>
+            <!-- Beneficio 3 -->
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <img src="../media/img/logoSale.png" alt="Experiencia" style="width: 50%; max-width: 100px; height: auto;">
+                    <div class="benefit-title">+20 años de experiencia</div>
+                    <p class="benefit-description">creando momentos inolvidables, con flores y regalos de la más alta calidad, cuidadosamente seleccionados y elaborados por nuestro equipo experto.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!--Promocion especial, podemos decir que se entrega con algo especial o la experiencia al contratarnos-->
+
+    <div class="container mt-5">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center">
+                <img src="../media/video/recibirR1.gif" alt="Imagen Producto" class="product-image">
+            </div>
+            <div class="col-md-6">
+                <h2>¡Regala Alegría con Flores y Suculentas!</h2>
+                <p>Las suculentas y arreglos florales son perfectos para cualquier ocasión. Sorprende a tus seres queridos con un regalo que perdura en el tiempo.</p>
+                <a href="{% url 'contact' %}"> 
+                    <button class="btn" style="background-color: #ff91c6; color: white;">Comprar Ahora</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!--Preguntas sobre la marca-->
+
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <!-- Columna del acordeón -->
+            <div class="col-md-6">
+                <h2 class="mb-4">¿TIENES DUDAS SOBRE ENTREGAS?</h2>
+                <p>Aquí las respuestas a las preguntas más frecuentes para que puedas realizar tu compra con tranquilidad</p>
+                
+                <div class="accordion" id="faqAccordion">
+                    <!-- Primera pregunta -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Productos con entrega SOLO en Nuevo León
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Actualmente, algunos productos están disponibles exclusivamente para entrega en Nuevo León.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Segunda pregunta -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                ¿Qué pasa si mi producto no llega bien?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <strong>NO TE PREOCUPES 😊</strong> Tenemos garantía. Si tu globo llega desinflado, los chocolates se derritieron o hay algún problema, contáctanos por correo, chat en línea, DM o WhatsApp. Ofrecemos reposición, devolución parcial o total según el caso.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tercera pregunta -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                ¿Cómo empacan los regalos?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Empacamos los regalos cuidadosamente para que lleguen en perfecto estado y con una presentación especial.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna de la imagen -->
+            <div class="col-md-6 text-center">
+                <img src="https://img.freepik.com/free-photo/close-up-woman-receiving-pack_23-2149103392.jpg?t=st=1732897423~exp=1732901023~hmac=43b1b3bb7e83b72280164f01401f11474c431b8cf75679f7006d3f6cd5421503&w=996" alt="Imagen de cajas de regalo" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+    <!-- informacion de hasta abajo, aqui se podria meter el link de administrador o algo asi -->
+
     {% endif %}
 
 {% endblock %}

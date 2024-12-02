@@ -4,25 +4,35 @@
 {% endblock %}
 {% block content %}
 
-    <table>
-        <tr>
-            <th>Estado</th>
-            <th>Direccion</th>
-            <th>Total</th>
-            <th>Fecha pedido</th>
-            <th>Acciones</th>
+<div  class="container text-center py-5">
+    <h1>Mis pedidos</h1>
+</div>
 
-        </tr>
-        {% for pedido in pedidos %}
-        <tr>
-            <td>{{ pedido.estado }}</td>
-            <td>{{ pedido.direccion_envio }}</td>
-            <td>${{ pedido.total }}</td>
-            <td>{{ pedido.fecha_pedido }}</td>
-            <td>
-                <a href="{% url 'detalle_pedido' pedido.id %}">Ver Detalles</a>
-            </td>
-        </tr>
-        {% endfor %}  
-    </table>
+<div class="container text-center py-2">
+    <div class="d-flex justify-content-center">
+        <table class="table" style="border: 1px solid white; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid white;">Estado</th>
+                    <th style="border: 1px solid white;">Dirección</th>
+                    <th style="border: 1px solid white;">Total</th>
+                    <th style="border: 1px solid white;">Fecha pedido</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                    <tr>
+                        <td style="border: 1px solid white;"><h5>{{ pedido.estado }}</h5></td>
+                        <td style="border: 1px solid white;"><h5>{{ pedido.direccion_envio }}</h5></td>
+                        <td style="border: 1px solid white;"><h5>${{ pedido.total }}</h5></td>
+                        <td style="border: 1px solid white;"><h5>{{ pedido.fecha_pedido }}</h5></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        <a href="{% url 'mi_cuenta' %}" class="btn" style="background-color: #ff91c6; color: white; margin-top: 10px;">
+            Volver a Mi cuenta
+        </a>
+</div>
 {% endblock %}

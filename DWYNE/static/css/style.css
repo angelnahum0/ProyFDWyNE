@@ -1,0 +1,45 @@
+nav {
+    background-color: #333;
+    padding: 10px;
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    
+}
+nav ul li {
+    margin: 0;
+    
+}
+nav ul li a {
+    color: #ff91c6;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    
+}
+nav ul li a:hover {
+    background-color: #ff91c6; /* Fondo rosa */
+    color: #ffffff; /* Texto negro */
+}
+
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.card {
+    background-color: #fff;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #cc6699;
+    border-color: #cc6699;
+}

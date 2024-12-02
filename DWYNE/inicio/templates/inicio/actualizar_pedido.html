@@ -3,10 +3,12 @@
 <title>Actualizar pedido</title>
 {% endblock %}
 {% block content %}
+<div class="container text-center py-5">
     <h1>Actualizar Pedido</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Actualizar Pedido</button>
     </form>
+</div>
 {% endblock %}

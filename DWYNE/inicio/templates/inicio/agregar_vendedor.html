@@ -3,6 +3,7 @@
 <title>Agregar Vendedor</title>
 {% endblock %}
 {% block content %}
+<div class="container text-center py-5">
     <form method="POST" >
         |{% csrf_token %}
         <h3>Formulario de Usuario</h3>
@@ -13,4 +14,5 @@
 
         <button type="submit">Agregar Trabajador</button>
     </form>
+</div>
 {% endblock %}

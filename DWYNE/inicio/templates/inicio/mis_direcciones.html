@@ -3,27 +3,43 @@
 <title>Mis direcciones</title>
 {% endblock %}
 {% block content %}
-    <table>
-        <tr>
-            <th>Codigo Postal</th>
-            <th>Ciudad</th>
-            <th>Colonia</th>
-            <th>Calle</th>
-            <th>Acciones</th>
-        </tr>
-        {% for direccion in direcciones %}
-        <tr>
-        <td>{{direccion.codpos}}</td>
-        <td>{{direccion.ciudad}}</td>
-        <td>{{direccion.colonia}}</td>
-        <td>{{direccion.calle}}</td>
+    <div  class="container text-center py-5">
+    <h1>Direcciones</h1>
+</div>
 
-        <td>
-            <a href="{% url 'editar_direccion' direccion.id %}">Editar</a>
-            <a href="{% url 'borrar_direccion' direccion.id %}">Eliminar</a>
-        </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="{% url 'agregar_direccion' %}">Agregar Direcciones</a>
+<div  class="container text-center py-2">
+    <h4>Codigo postal, Ciudad, Colonia, Calle y Número</h4>
+</div>
+
+{% for direccion in direcciones %}
+
+    <div class="container text-center py-2">
+        <div class="d-flex align-items-center justify-content-between">
+            <h5>{{direccion.codpos}}, {{direccion.ciudad}}, {{direccion.colonia}}, {{direccion.calle}}</h5>
+            
+            <div>
+                <!--
+                <a href="{% url 'editar_direccion' direccion.id %}">
+                    <button class="btn" style="background-color: #ff91c6; color: white;">Editar</button>
+                </a>
+            -->
+                <a href="{% url 'borrar_direccion' direccion.id %}">
+                    <button class="btn" style="background-color: #ff91c6; color: white;">Eliminar</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+
+<div class="container text-center py-1">
+    <a href="{% url 'agregar_direccion' %}">
+        <button class="btn" style="background-color: #ff91c6; color: white;">Agregar Direcciones</button>
+    </a>
+</div>
+<div class="container text-center py-1">
+    <a href="{% url 'mi_cuenta' %}" class="btn" style="background-color: #ff91c6; color: white; margin-top: 10px;">
+        Volver a Mi cuenta
+    </a>
+</div>
 {% endblock %}

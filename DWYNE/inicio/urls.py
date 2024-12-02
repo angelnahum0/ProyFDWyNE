@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from inicio.views import CustomLoginView
+from django.urls import include
 from . import views
 
 # urls que se usan en la aplicación
@@ -42,6 +43,7 @@ urlpatterns = [
     path('editar_vendedor/<int:id>/', views.editar_vendedor, name='editar_vendedor'),
     path('borrar_vendedor/<int:id>/', views.borrar_vendedor, name='borrar_vendedor'),
     path('scrape/', views.scrape_view, name='scrape'),
+    path('accounts/', include('allauth.urls')),  # Rutas para autenticación social
     
 ]
 

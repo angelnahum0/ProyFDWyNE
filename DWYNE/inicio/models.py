@@ -5,24 +5,26 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # modelo de usuario
 class UserManager(BaseUserManager):
-    def create_user(self, email, full_name, password=None, **extra_fields):
+    def create_user(self, email, name, password=None, **extra_fields):
         if not email:
             raise ValueError('El correo debe ser proporcionado')
         email = self.normalize_email(email)
-        user = self.model(email=email, full_name=full_name, **extra_fields)
+        user = self.model(email=email, name=name, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
+
     # Crear superusuario
-    def create_superuser(self, email, full_name, password=None, **extra_fields):
+    def create_superuser(self, email, name, password=None, **extra_fields):
         extra_fields.setdefault('is_admin', True)
         extra_fields.setdefault('is_superuser', True)
         if extra_fields.get('is_admin') is not True:
             raise ValueError('Superuser debe tener is_admin=True.')
         
-        user = self.create_user(email, full_name, password, **extra_fields)
+        user = self.create_user(email, name, password, **extra_fields)
         user.save(using=self._db)
         return user
+
 # Crear modelo de usuario
 class User(AbstractBaseUser):
     USER_TYPES = (
@@ -30,20 +32,22 @@ class User(AbstractBaseUser):
         ('vendedor', 'Vendedor'),
         ('usuario', 'Usuario'),
     )
+
+    username = models.CharField(max_length=255, null=True, blank=True)  # Hacer que sea nullable
     user_type = models.CharField(max_length=10, choices=USER_TYPES, default='usuario')
     email = models.EmailField(unique=True)
-    full_name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'  # Esto asegura que el email se usa para autenticación
-    REQUIRED_FIELDS = ['full_name']
+    USERNAME_FIELD = 'email'  # Sigue utilizando el email para la autenticación
+    REQUIRED_FIELDS = ['name']  # El nombre completo sigue siendo requerido
 
     def __str__(self):
-        return self.full_name
+        return self.name
 
     def has_perm(self, perm, obj=None):
         return True

@@ -101,7 +101,6 @@ def vendedores(request):
         return redirect('index')
     #si el usuario es un administrador
     if request.user.user_type == 'admin':
-        # Obtener todos los vendedores
         vendedores = Trabajadores.objects.all()
         return render(request, 'inicio/vendedores.html', {'vendedores': vendedores})
 @login_required
@@ -196,7 +195,9 @@ def about(request):
     return render(request, 'inicio/about.html')
 
 def contact(request):
-    return render(request, 'inicio/contact.html')
+    productos = Producto.objects.all()
+    return render(request, 'inicio/contact.html',{'productos': productos})
+    
 
 def user_login(request):
     storage = messages.get_messages(request)  # Obtén y limpia mensajes antiguos

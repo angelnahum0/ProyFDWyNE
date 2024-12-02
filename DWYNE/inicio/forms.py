@@ -1,6 +1,7 @@
 from django import forms
 from .models import User, Producto, Pedido, Direcciones, Trabajadores
 from django.core.exceptions import ValidationError
+from allauth.account.forms import SignupForm, LoginForm
 
 #formularios usados para los registros de usuarios, login, busqueda, direcciones, edicion de usuario, productos, pedidos, cambio de contraseña, actualizacion de estado de productos y trabajadores
 
@@ -9,7 +10,7 @@ class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = User
-        fields = ['email', 'full_name', 'password']
+        fields = ['email', 'name', 'password']
     def clean_email(self):
         email = self.cleaned_data.get('email')
         # Verifica si el correo ya está registrado
@@ -41,10 +42,10 @@ class DireccionesForm(forms.ModelForm):
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'full_name']
+        fields = ['email', 'name']
         widgets = {
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo Electrónico'}),
-            'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre Completo'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre Completo'}),
         }
 #formulario de productos
 class ProductoForm(forms.ModelForm):
@@ -164,3 +165,27 @@ class TrabajadorForm(forms.ModelForm):
             'rol': forms.Select(attrs={'class': 'form-control'}),
         }
         usuario = forms.ModelChoiceField(queryset=User.objects.filter(user_type='vendedor'), required=False)
+
+class CustomSignupForm(SignupForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ['email', 'name', 'password']
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        # Verifica si el correo ya está registrado
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('Este correo ya está registrado. Usa otro correo.')
+        return email
+
+    def save(self, request):
+        user = super().save(request)
+        user.save()
+        return user
+
+class CustomLoginForm(LoginForm):
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError('El correo electrónico es obligatorio.')
+        return self.cleaned_data

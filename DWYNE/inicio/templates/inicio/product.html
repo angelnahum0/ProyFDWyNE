@@ -3,27 +3,28 @@
 <title>Productos</title>
 {% endblock %}
 {% block content %}
-        <table>
-            <tr>
-                <th>Título</th>
-                <th>Precio</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
-            </tr>
+<div class="container text-center py-5">
+    <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
+    
+        <div class="row justify-content-center g-4">
             {% for producto in productos %}
-            <tr>
-                <td>{{ producto.titulo }}</td>
-                <td>{{ producto.precio }}</td>
-                {% if producto.imagen %}
-                    <td><img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" width="100"></td>
-                {% endif %}
-                <td>
-                    <a href="{% url 'producto_edit' producto.id %}">Editar</a>
-                    <a href="{% url 'producto_delete' producto.id %}">Borrar</a>
-                </td>
-            </tr>
+                <div class="col-md-3">
+                    <div class="card product-card text-center" style="border: 5px solid #ffffff;">
+                        <a href="{% url 'detalle_producto' producto.id %}">
+                            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="card-img-top product-image">
+                        </a>
+                        <div class="card-body">
+                            <h5>{{ producto.titulo }}</h5>
+                            <p>{{ producto.precio }}</p>
+                            <a href="{% url 'producto_edit' producto.id %}">Editar</a>
+                            <a href="{% url 'producto_delete' producto.id %}">Borrar</a>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </table>
-        <a href="{% url 'agregar_producto'%}">Agregar Producto</a>
+        </div>
+    <a href="{% url 'agregar_producto'%}">Agregar Producto</a>
     </div>
+
+</div>
 {% endblock %}

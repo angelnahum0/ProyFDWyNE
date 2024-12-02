@@ -3,14 +3,16 @@
 <title>Borrar Direccion</title>
 {% endblock %}
 {% block content %}
+<div class="container text-center py-5">
 <h1>¿Estás seguro de que deseas eliminar esta dirreccion?</h1>
-<p>Codigo Postal: {{ direccion.codpos }}</p>
-<p>Ciudad: {{ direccion.ciudad }}</p>
-<p>Colonia: {{ direccion.colonia }}</p>
-<p>Calle: {{ direccion.calle }}</p>
+<h5>Codigo Postal: {{ direccion.codpos }}</h5>
+<h5>Ciudad: {{ direccion.ciudad }}</h5>
+<h5>Colonia: {{ direccion.colonia }}</h5>
+<h5>Calle: {{ direccion.calle }}</h5>
 <form method="post">
     {% csrf_token %}
     <button type="submit">Confirmar</button>
     <a href="{% url 'product' %}">Cancelar</a>
 </form>
+</div>
 {% endblock %}

@@ -1,100 +1,129 @@
-nav {
-    background-color: #333;
-    padding: 10px;
-}
+
 nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: space-around;
+    
 }
 nav ul li {
     margin: 0;
+    
 }
 nav ul li a {
-    color: white;
+    color: #ff91c6;
     text-decoration: none;
     padding: 10px 20px;
     display: block;
+    
 }
 nav ul li a:hover {
-    background-color: #555;
-}
-@import url('https://fonts.googleapis.com/css2?family=Bigelow+Rules&display=swap');
-
-*{
-    box-sizing: border-box;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Bigelow Rules', cursive;
-    font-size: 35px;
+    background-color: #ff91c6; /* Fondo rosa */
+    color: #ffffff; /* Texto negro */
 }
 
-.header{
-    background-color: black;
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.card {
+    background-color: #fff;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #cc6699;
+    border-color: #cc6699;
+}
+.navbar {
+    background-color: #d32f2f; /* Color rojo */
+}
+.logo {
+    max-height: 40px;
+}
+.search-bar {
+    width: 100%;
+}
+.nav-link {
+    color: black !important;
+}
+.nav-link:hover {
+    text-decoration: underline;
+}
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+.text-section {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 85px;
-    padding: 5px 10%;
+    flex-direction: column;
+    justify-content: center;
+}
+.product-card img {
+    transition: transform 0.3s, opacity 0.3s;
+}
+.product-card img:hover {
+    transform: scale(1.05);
+    opacity: 1.0;
+}
+.product-card .product-img {
+    display: block;
+}
+.product-card .product-img-hover {
+    display: none;
+}
+.product-card:hover .product-img {
+    display: none;
+}
+.product-card:hover .product-img-hover {
+    display: block;
+}
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #f66;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.benefit-card {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #f1f1f1;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    margin-bottom: 20px;
+}
+.benefit-card i {
+    font-size: 50px;
+    color: #e83e8c;
+    margin-bottom: 10px;
+}
+.benefit-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.benefit-description {
+    font-size: 1em;
+    color: #6c757d;
+}
+.custom-btn {
+    background-color: #ff91c6;
+    color: #ffffff;
+    border: 1px solid #ff7ebc;
+    margin-right: 0.5rem; /* Equivalente a `me-2` en Bootstrap */
 }
 
-.header .logo{
-    cursor: pointer;
-}
-
-.header .logo img{
-    height: 70px;
-    border-radius: 50%;
-    width: auto;
-    transition: all 0.3s;
-}
-
-.header .logo img:hover{
-    transform: scale(1.1);     
-       
-    box-shadow: 0px 0px 20px ghostwhite;
-    transition: all .4s ease-in-out
-}
-
-.header .nav-links{
-    list-style: none;
-}
-
-.header .nav-links li{
-    display: inline-block;
-    padding: 0 20px;    
-}
-
-.header .nav-links li:hover{
-    transform: scale(1.1);
-}
-
-.header .nav-links a{
-    font-size: 700;
-    color: #eceff1;
-    text-decoration: none;    
-}
-
-.header .nav-links li a:hover{
-    color: deeppink;
-}
-
-.header .btn button{
-    font-weight: 700;
-    color: #1b3039;
-    padding: 9px 25px;
-    background: #eceff1;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
-}
-
-.header .btn button:hover{
-    background-color: #e2f1f8;
-    color: hotpink;
-    transform: scale(1.1);
+.custom-btn:active {
+    background-color: #ff91c6; /* El color ya es igual, pero lo mantenemos por consistencia */
+    color: #ffffff;
 }

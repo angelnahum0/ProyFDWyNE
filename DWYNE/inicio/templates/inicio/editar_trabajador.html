@@ -3,10 +3,12 @@
 <title>Editar trabajador</title>
 {% endblock %}
 {% block content %}
+<div class="container my-5">
     <h1>Editar trabajador</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ trabajador_form.as_p }}
         <button type="submit">Guardar cambios</button>
     </form>
+</div>
 {% endblock %}

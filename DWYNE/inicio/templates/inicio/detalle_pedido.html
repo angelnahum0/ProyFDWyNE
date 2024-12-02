@@ -3,7 +3,8 @@
 <title>{{pedido.id}}</title>
 {% endblock %}
 {% block content %}
-    <div>
+
+    <div class="container text-center py-5">
         {% if pedido %}
             {% if user.user_type == "usuario" %}
             <h1>Detalle del pedido {{pedido.id}}</h1>

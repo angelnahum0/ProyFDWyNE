@@ -2,28 +2,47 @@
 {% block title %}
 <title>Vendedores</title>
 {% endblock %}
+
 {% block content %}
-    {% if vendedores %}
-        <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Puesto</th>
-            <th>Salario</th>
-            <th>Acciones</th>
-        </tr>
+<div class="container text-center py-2">
+
+    <h1>Vendedores</h1>
+    <div class="d-flex justify-content-center">
+        <table class="table" style="border: 1px solid white; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Puesto</th>
+                    <th>Salario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
         {% for vendedor in vendedores %}
+        <tbody>
             <tr>
                 <td>{{ vendedor.nombre }}</td>
-                <td>{{ vendedor.puesto }}</td>
+                <td>{{ vendedor.rol }}</td>
                 <td>{{ vendedor.salario }}</td>
                 <td>
-                    <a href="{% url 'editar_vendedor' vendedor.id %}">Editar</a>
-                    <a href="{% url 'borrar_vendedor' vendedor.id %}">Eliminar</a>
+                    <a href="{% url 'editar_vendedor' vendedor.id %}" class="btn me-2" 
+                    style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+                    onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+                    onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Editar</a>
+                    <a href="{% url 'borrar_vendedor' vendedor.id %}"class="btn me-2" 
+                    style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+                    onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+                    onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Eliminar</a>
                 </td>
             </tr>
+        </tbody>
+            
+
+    
+
+
         {% endfor %}
-    {% else %}
-        <p>No hay vendedores</p>
-    {% endif %}
+        </table>
+    </div>
     <a href="{% url 'agregar_vendedor' %}">Agregar Vendedores</a>
+</div>
 {% endblock %}
