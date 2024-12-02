@@ -29,3 +29,6 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver_plus --cert-file /temp
 #python manage.py runserver
+#crear super usuario
+INSERT INTO inicio_user (email, full_name, user_type, date_joined, is_active, is_admin, password)
+VALUES ('admin@example.com', 'Admin User', 'admin', NOW(), true, true, 'pbkdf2_sha256$870000$XVCoRmWJNu2NUAKmFXXay6$ItdtZnAOMBgsnPe0ScWcqjzTLJBBPsy1Vwt9EZr8ulo=');
