@@ -27,7 +27,7 @@ pip install pyopenssl
 
 python manage.py makemigrations
 python manage.py migrate
-python manage.py runserver_plus --cert-file /temp
+python manage.py runserver_plus --cert-file ./temp
 #python manage.py runserver
 #crear super usuario
 INSERT INTO inicio_user (email, name, user_type, date_joined, is_active, is_admin, password)
