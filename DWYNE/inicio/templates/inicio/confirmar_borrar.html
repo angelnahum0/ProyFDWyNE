@@ -10,8 +10,10 @@
 
 <form method="post">
     {% csrf_token %}
-    <button type="submit">Confirmar</button>
-    <a href="{% url 'product' %}">Cancelar</a>
+    <button type="submit" class="btn" style="background-color: #ff91c6; color: white;">Confirmar</button>
+    <a href="{% url 'product' %}" class="btn" style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+    onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+    onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Cancelar</a>
 </form>
 </div>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'inicio/base.html' %}
+{% load static %}
 {% block title %}
 <title>Borrar trabajador</title>
 {% endblock %}
@@ -10,8 +11,10 @@
 <p>Salario: {{ vendedor.salario }}</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="custom-btn">Confirmar</button>
-    <a href="{% url 'vendedores' %}" class="custom-btn">Cancelar</a>
+    <button type="submit" class="btn" style="background-color: #ff91c6; color: white;">Confirmar</button>
+    <a href="{% url 'vendedores' %}" class="btn" style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+    onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+    onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Cancelar</a>
 </form>
 </div>
 {% endblock %}

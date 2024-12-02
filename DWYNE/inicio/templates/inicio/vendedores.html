@@ -43,6 +43,8 @@
         {% endfor %}
         </table>
     </div>
-    <a href="{% url 'agregar_vendedor' %}">Agregar Vendedores</a>
+    <a href="{% url 'agregar_vendedor' %}" class="btn" style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+    onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+    onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Agregar Vendedores</a>
 </div>
 {% endblock %}

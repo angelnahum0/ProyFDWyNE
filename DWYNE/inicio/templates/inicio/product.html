@@ -16,14 +16,20 @@
                         <div class="card-body">
                             <h5>{{ producto.titulo }}</h5>
                             <p>{{ producto.precio }}</p>
-                            <a href="{% url 'producto_edit' producto.id %}">Editar</a>
-                            <a href="{% url 'producto_delete' producto.id %}">Borrar</a>
+                            <a href="{% url 'producto_edit' producto.id %}" class="btn" style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+                            onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+                            onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Editar</a>
+                            <a href="{% url 'producto_delete' producto.id %}"class="btn" style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+                            onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+                            onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Borrar</a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    <a href="{% url 'agregar_producto'%}">Agregar Producto</a>
+    <a href="{% url 'agregar_producto'%}" class="btn" style="background-color: #ff91c6; color: #ffffff; border: 1px solid #ff7ebc;"
+    onmousedown="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';" 
+    onmouseup="this.style.backgroundColor='#ff91c6'; this.style.color='#ffffff';">Agregar Producto</a>
     </div>
 
 </div>

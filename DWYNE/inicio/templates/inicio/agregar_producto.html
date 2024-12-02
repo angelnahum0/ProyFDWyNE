@@ -8,7 +8,7 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Guardar Producto</button>
+        <button type="submit" class="btn" style="background-color: #ff91c6; color: white;">Guardar Producto</button>
     </form>
 </div>
 {% endblock %}
