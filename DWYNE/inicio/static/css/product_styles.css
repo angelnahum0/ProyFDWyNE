@@ -1,0 +1,37 @@
+/* Estilo de la tarjeta del producto */
+.product-card {
+    border: 5px solid #ffffff;
+    transition: transform 0.3s ease;
+}
+
+/* Efecto al pasar el ratón sobre la tarjeta */
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo de la imagen del producto */
+.product-image {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ff7ebc;
+}
+
+/* Estilo de los botones de acción (editar, borrar) */
+.btn {
+    background-color: #ff91c6;
+    color: #ffffff;
+    border: 1px solid #ff7ebc;
+    margin: 5px 0;
+    padding: 8px 15px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Efecto de los botones al hacer clic */
+.btn:active {
+    background-color: #ff7ebc;
+    color: #ffffff;
+}
