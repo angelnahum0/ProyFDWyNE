@@ -71,9 +71,11 @@
             {% for producto in productos|slice:":5" %}
                 <div class="col-md-4">
                     <div class="card product-card text-center" style="border: 5px solid #ffffff;">
+                        {% if producto.imagen %}
                         <a href="{% url 'detalle_producto' producto.id %}">
                             <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="card-img-top product-image">
                         </a>
+                        {% endif %}
                         <div class="card-body">
                             <h5>{{ producto.titulo }}</h5>
                             <p>{{ producto.descripcion }}</p>
@@ -91,12 +93,12 @@
         <div class="row align-items-center">
             <!-- Sección de imágenes -->
             <div class="col-md-6 text-center">
-                <img src="{% static 'img/prom1.jpg'%}" alt="Imagen portada regalos" class="product-image mb-4 img-separada">
+                <img src="{% static 'img/muestra3.jpg'%}" alt="Imagen portada regalos" class="product-image mb-4 img-separada">
             </div>
             <!-- Sección de texto -->
             <div class="col-md-6 text-section">
-                <h1 class="fw-bold">ENVÍA FLORES Y SUCULENTAS</h1>  
-                <p>¿Buscas un regalo natural? Te encantarán los arreglos de flores Botánica y suculentas de la región en macetas muy simpáticas. Envía tus regalos a domicilio con Unelefante.</p>
+                <h1 class="fw-bold">ENVÍA REGALOS PERSONALIZADOS</h1>  
+                <p>¿Buscas el regalo perfecto? Descubre nuestra selección de detalles únicos y personalizados. Desde elegantes arreglos hasta piezas únicas que cuentan una historia, tenemos el regalo ideal para cada ocasión. ¡Envía sonrisas a domicilio con nuestra tienda!</p>
             </div>
         </div>
     </div>
@@ -110,24 +112,26 @@
             <div class="col-md-4">
                 <div class="benefit-card">
                     <img src="{% static 'img/logoEntrega.png' %}" alt="Variedad de regalos" style="width: 50%; max-width: 100px; height: auto;">
-                    <div class="benefit-title">La más amplia variedad</div>
-                    <p class="benefit-description">de regalos, con colecciones y colaboraciones exclusivas con las marcas más reconocidas.</p>
+                    <div class="benefit-title">Variedad inigualable</div>
+                    <p class="benefit-description">La más amplia selección de regalos personalizados, diseñados con atención al detalle y materiales de la más alta calidad.</p>
                 </div>
             </div>
             <!-- Beneficio 2 -->
             <div class="col-md-4">
                 <div class="benefit-card">
                     <img src="{% static 'img/logoRegalo.png' %}" alt="Entrega garantizada" style="width: 50%; max-width: 100px; height: auto;">
-                    <div class="benefit-title">Entrega garantizada</div>
-                    <p class="benefit-description">desde 3 horas en TODO México, con la flota dedicada más grande y confiable del país.</p>
+                    <div class="benefit-title">Entrega confiable</div>
+                    <p class="benefit-description">Entrega rápida y garantizada. Tu regalo llegará justo a tiempo para sorprender a esa persona especial.
+
+                    </p>
                 </div>
             </div>
             <!-- Beneficio 3 -->
             <div class="col-md-4">
                 <div class="benefit-card">
                     <img src="{% static 'img/logoSale.png' %}" alt="Experiencia" style="width: 50%; max-width: 100px; height: auto;">
-                    <div class="benefit-title">+20 años de experiencia</div>
-                    <p class="benefit-description">creando momentos inolvidables, con flores y regalos de la más alta calidad, cuidadosamente seleccionados y elaborados por nuestro equipo experto.</p>
+                    <div class="benefit-title">Ofertas únicas</div>
+                    <p class="benefit-description">Disfruta de nuestras promociones especiales y descuentos exclusivos en temporadas clave. ¡El regalo perfecto siempre está al alcance!</p>
                 </div>
             </div>
         </div>
@@ -140,11 +144,11 @@
     <div class="container mt-5">
         <div class="row align-items-center">
             <div class="col-md-6 text-center">
-                <img src="{% static 'video/recibirR1.gif'%}" alt="Imagen Producto" class="product-image">
+                <img src="{% static 'img/muestra.jpg'%}" alt="Imagen Producto" class="product-image">
             </div>
             <div class="col-md-6">
-                <h2>¡Regala Alegría con Flores y Suculentas!</h2>
-                <p>Las suculentas y arreglos florales son perfectos para cualquier ocasión. Sorprende a tus seres queridos con un regalo que perdura en el tiempo.</p>
+                <h2>¡Regala Momentos Inolvidables!</h2>
+                <p>Nuestros regalos personalizados son ideales para cualquier ocasión. Transforma un detalle común en algo extraordinario que será recordado por siempre.</p>
                 <a href="{% url 'contact' %}"> 
                     <button class="btn" style="background-color: #ff91c6; color: white;">Comprar Ahora</button>
                 </a>
@@ -166,12 +170,12 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                Productos con entrega SOLO en Nuevo León
+                                Productos con entrega regional
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                Actualmente, algunos productos están disponibles exclusivamente para entrega en Nuevo León.
+                                Algunos productos están disponibles exclusivamente para entrega en ciertas regiones. Consulta disponibilidad al momento de tu compra.
                             </div>
                         </div>
                     </div>
@@ -180,12 +184,12 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                ¿Qué pasa si mi producto no llega bien?
+                                ¿Qué pasa si mi producto no llega en buen estado?
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                <strong>NO TE PREOCUPES 😊</strong> Tenemos garantía. Si tu globo llega desinflado, los chocolates se derritieron o hay algún problema, contáctanos por correo, chat en línea, DM o WhatsApp. Ofrecemos reposición, devolución parcial o total según el caso.
+                                <strong>¡NO TE PREOCUPES! 😊</strong> Tenemos garantía. Si hay algún problema, contáctanos por correo, chat en línea, DM o WhatsApp. Ofrecemos reposición o reembolso según sea necesario.
                             </div>
                         </div>
                     </div>
@@ -199,7 +203,7 @@
                         </h2>
                         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                Empacamos los regalos cuidadosamente para que lleguen en perfecto estado y con una presentación especial.
+                                Empacamos cada regalo cuidadosamente para garantizar que llegue en perfecto estado y con una presentación especial que sorprenda a quien lo reciba.
                             </div>
                         </div>
                     </div>
@@ -208,7 +212,7 @@
 
             <!-- Columna de la imagen -->
             <div class="col-md-6 text-center">
-                <img src="https://img.freepik.com/free-photo/close-up-woman-receiving-pack_23-2149103392.jpg?t=st=1732897423~exp=1732901023~hmac=43b1b3bb7e83b72280164f01401f11474c431b8cf75679f7006d3f6cd5421503&w=996" alt="Imagen de cajas de regalo" class="img-fluid rounded">
+                <img src="{% static 'img/muestra2.png'%}" alt="Imagen de cajas de regalo" class="img-fluid rounded">
             </div>
         </div>
     </div>

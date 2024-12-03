@@ -107,6 +107,7 @@
     
         {% block content %}
         {% endblock %}
+    {% if user.is_authenticated %}
     {% if user.user_type == "usuario" %}
         <footer class="bg-light py-3" style="margin-top: 30px;">
             <div class="container">
@@ -114,9 +115,15 @@
                     <!-- Servicio al Cliente -->
                     <div class="col-md-3">
                         <p><h5>Pickup de Pedidos</h5><br>
-                            Plutarco Elías Calles 140 A2 Tampiquito<br>
-                            66240, San Pedro - Nuevo León, Mx<br>
-                            <a href="#" class="text-decoration-none">Ver en Google Maps</a>
+                            Facultad de Ingeniería, <br> 
+                            Av. Universidad 3000,<br> 
+                            Ciudad Universitaria, Coyoacán,<br>
+                            Cd. Mx., CP 04510<br>
+                            <p>
+                                <a href="https://www.google.com/maps?q=Facultad+de+Ingeniería,+Av.+Universidad+3000,+Ciudad+Universitaria,+Coyoacán,+Cd.+Mx.,+CP+04510" target="_blank" style="color: blue; text-decoration: underline;">
+                                    Ver en Google Maps
+                                </a>
+                            </p>
                         </p>
                     </div>
                     <div class="col-md-3">
@@ -124,7 +131,11 @@
                             <i class="bi bi-telephone"></i> 729 813 5657<br>
                             Lunes a Viernes de 9:00 am a 7:00 pm<br>
                             Sábado de 10:00 am a 2:00 pm<br>
-                            <a href="#" class="text-decoration-none">Doneedelamour@gmail.com</a>
+                            <p>Correo electrónico: 
+                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Doneedelamour@gmail.com" target="_blank" style="color: blue; text-decoration: underline;">
+                                    Doneedelamour@gmail.com
+                                </a>
+                            </p>
                         </p>
                     </div>
     
@@ -151,14 +162,72 @@
                     <a href="#" class="text-dark mx-2"><i class="bi bi-twitter"></i></a>
                 </div>
                 <div class="text-center mt-3 text-muted">
-                    <p>ENVÍA REGALOS PERSONALIZADOS A MONTERREY O A TODO MÉXICO. SACA TU SONRISA MÁS AUTÉNTICA Y QUÉDATE EN SUS MEMORIAS MÁS BONITAS.</p>
-                    <p>Copyright © 2024. JKL S.A. de C.V. Todos los Derechos Reservados.</p>
+                    <p>ENVÍA REGALOS PERSONALIZADOS. SACA TU SONRISA MÁS AUTÉNTICA Y QUÉDATE EN SUS MEMORIAS MÁS BONITAS.</p>
+                    <p>Copyright © 2024. Donne de L'Amour. Todos los Derechos Reservados.</p>
                 </div>
             </div>
         </footer>
         {% endif %}
+        {% else %}
+        <footer class="bg-light py-3" style="margin-top: 30px;">
+            <div class="container">
+                <div class="row">    
+                    <!-- Servicio al Cliente -->
+                    <div class="col-md-3">
+                        <p><h5>Pickup de Pedidos</h5><br>
+                            Facultad de Ingeniería, <br> 
+                            Av. Universidad 3000,<br> 
+                            Ciudad Universitaria, Coyoacán,<br>
+                            Cd. Mx., CP 04510<br>
+                            <p>
+                                <a href="https://www.google.com/maps?q=Facultad+de+Ingeniería,+Av.+Universidad+3000,+Ciudad+Universitaria,+Coyoacán,+Cd.+Mx.,+CP+04510" target="_blank" style="color: blue; text-decoration: underline;">
+                                    Ver en Google Maps
+                                </a>
+                            </p>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><h5>Atención a Clientes</h5><br>
+                            <i class="bi bi-telephone"></i> 729 813 5657<br>
+                            Lunes a Viernes de 9:00 am a 7:00 pm<br>
+                            Sábado de 10:00 am a 2:00 pm<br>
+                            <p>Correo electrónico: 
+                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Doneedelamour@gmail.com" target="_blank" style="color: blue; text-decoration: underline;">
+                                    Doneedelamour@gmail.com
+                                </a>
+                            </p>
+                        </p>
+                    </div>
     
+                    <!-- Asistencia -->
+                    <div class="col-md-2">
+                        <h5>ASISTENCIA</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'mis_pedidos' %}" class="text-decoration-none">Pedidos</a></li>
+                        </ul>
+                    </div>
     
+                    <!-- Más Información -->
+                    <div class="col-md-4">
+                        <h5>MÁS INFO</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'about' %}" class="text-decoration-none">Nosotros</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <p>SÍGUENOS EN REDES</p>
+                    <a href="#" class="text-dark mx-2"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-dark mx-2"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-dark mx-2"><i class="bi bi-twitter"></i></a>
+                </div>
+                <div class="text-center mt-3 text-muted">
+                    <p>ENVÍA REGALOS PERSONALIZADOS. SACA TU SONRISA MÁS AUTÉNTICA Y QUÉDATE EN SUS MEMORIAS MÁS BONITAS.</p>
+                    <p>Copyright © 2024. Donne de L'Amour. Todos los Derechos Reservados.</p>
+                </div>
+            </div>
+        </footer>
+        {% endif %}
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

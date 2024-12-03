@@ -48,7 +48,40 @@ def detalle_producto(request, id):
     #revisa si el usuario esta autenticado
     if not request.user.is_authenticated:
         producto = get_object_or_404(Producto, id=id)
-        return render(request, 'inicio/detalle_producto.html', {'producto': producto})
+        keywords = producto.keywords.split(',')
+        url = "https://unelefante.mx/collections/regalos-de-amor-y-aniversario"
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Encuentra los contenedores de productos
+        products = soup.find_all('div', class_='product-collection__content')
+        scraped_data = []
+
+        for product in products:
+            # Extraer el título del producto
+            title = product.find('h4', class_='h6 m-0').text.strip() if product.find('h4', class_='h6 m-0') else 'Título no disponible'
+
+            # Extraer descripción del producto
+            description_container = product.find('div', class_='product-collection__description')
+            description = description_container.find('p', class_='m-0').text.strip() if description_container else 'Descripción no disponible'
+            matches = [keyword for keyword in keywords if keyword.lower() in description.lower()]
+
+            # Extraer el precio del producto
+            price_container = product.find('div', class_='product-collection__price')
+            price = price_container.find('span', class_='money').text.strip() if price_container else 'Precio no disponible'
+            price_value = float(price.replace('$', '').replace(',', '').strip()) if price != 'Precio no disponible' else 0
+            producto_precio = float(producto.precio)
+            if len(matches) > 0:
+                if price_value > producto_precio:
+                    scraped_data.append({
+                        'title': title,
+                        'description': description,
+                        'matches' : matches,
+                        'price': price,
+                    })
+
+        # Retorna los datos en formato JSON
+        return render(request, 'inicio/detalle_producto.html', {'producto': producto, 'datos': scraped_data})
     #si el usuario es un usuario
     if request.user.user_type == 'usuario':
         producto = get_object_or_404(Producto, id=id)

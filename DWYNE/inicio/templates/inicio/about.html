@@ -1,22 +1,37 @@
 {% extends 'inicio/base.html' %}
+
 {% block title %}
-<title>Sobre nosotros</title>
+    <title>Acerca de | Arreglos y Suculentas</title>
 {% endblock %}
+
 {% block content %}
-{% load static %}
-<div class="container text-center py-5">
-<h1 class="header-title">Arreglos de Flores y Suculentas</h1>
-</div>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/about_styles.css' %}">
 
-<div class="container col-md-6 text-center ">
-<img src="{% static 'img/nosotros.png' %}" class="img-fluid" alt="Imagen de ejemplo">
-</div>
+    <div class="about-body">
+        <!-- Encabezado principal -->
+        <div class="about-header container text-center py-5">
+            <h1 class="about-title">Sobre nosotros</h1>
+        </div>
 
+        <!-- Imagen central -->
+        <div class="about-image container col-md-6 text-center">
+            <img src="{% static 'img/nosotros.png' %}" class="about-img img-fluid" alt="Imagen de suculentas y flores">
+        </div>
 
-<div class="container text-center py-5">
-<p class="subtext" style="font-size: 25px;">
-    Los arreglos se hacen al día con tallos frescos, podrá haber variaciones en el tono y/o variedad,
-    pero siempre entregaremos suculentas vivas y hermosas flores frescas en un lindo arreglo muy similar al de la imagen.
-</p>
-</div>    
+        <!-- Descripción personalizada -->
+        <div class="about-description container text-center py-5">
+            <p class="about-text">
+                Donne de L'Amour es una plataforma en línea creada para ofrecer regalos únicos y especiales, como arreglos de flores, suculentas y detalles personalizados, pensados para cada ocasión. Inspirada en el deseo de crear experiencias memorables, la plataforma permite a los usuarios encontrar el regalo perfecto que transmita emociones y sentimientos profundos.
+            </p>
+
+            <p class="about-text">
+                Nuestra misión es brindar productos frescos y de alta calidad, seleccionados cuidadosamente para asegurar que cada cliente reciba un detalle hermoso y significativo. Además, ofrecemos servicios como comparación de precios, integración con redes sociales y métodos de pago seguros, garantizando una experiencia de compra sencilla y confiable.
+            </p>
+
+            <p class="about-text">
+                En Donne de L'Amour, cada arreglo es elaborado al momento, asegurando frescura y originalidad en cada pedido. Nos comprometemos a entregar productos que no solo cumplan con las expectativas de nuestros clientes, sino que las superen, convirtiendo cada regalo en un símbolo de amor y gratitud.
+            </p>
+        </div>    
+    </div>
 {% endblock %}

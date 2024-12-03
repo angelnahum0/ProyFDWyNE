@@ -8,9 +8,11 @@
         {% for producto in productos %}
             <div class="col-md-4">
                 <div class="card product-card text-center" style="border: 5px solid #ffffff;">
-                    <a href="{% url 'detalle_producto' producto.id %}">
-                        <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="card-img-top product-image">
-                    </a>
+                    {% if producto.imagen %}
+                        <a href="{% url 'detalle_producto' producto.id %}">
+                            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="card-img-top product-image">
+                        </a>
+                    {% endif %}
                     <div class="card-body">
                         <h5>{{ producto.titulo }}</h5>
                         <p>{{ producto.descripcion }}</p>
